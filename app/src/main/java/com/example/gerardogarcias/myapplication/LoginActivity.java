@@ -17,21 +17,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        goToMain();
+
         goToRegistro();
 
 
     }
-    private void  goToMain(){
-        CardView MainButton = (CardView) findViewById(R.id.mainButton);
-        MainButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+
     private void  goToRegistro(){
 
         TextView RegisterButton = (TextView) findViewById(R.id.botonRegistro);
