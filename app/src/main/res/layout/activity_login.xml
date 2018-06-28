@@ -13,10 +13,10 @@
         android:id="@+id/imageView"
         android:layout_width="250dp"
         android:layout_height="270dp"
-        android:layout_marginTop="40dp"
-        app:srcCompat="@drawable/logo"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        app:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/editText"
@@ -40,8 +40,9 @@
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
-        android:layout_marginBottom="130dp"
+        android:layout_marginBottom="100dp"
         android:layout_alignBottom="@+id/mainButton"
+        android:layout_above="@+id/mainButton"
         android:layout_alignLeft="@+id/editText"
         android:layout_alignStart="@+id/editText" />
 
@@ -53,7 +54,7 @@
         app:cardElevation="10dp"
         android:id="@+id/mainButton"
         android:layout_marginBottom="31dp"
-        android:layout_above="@+id/botonRegistro"
+        android:layout_above="@+id/invitadoButtom"
         android:layout_centerHorizontal="true">
 
         <RelativeLayout
@@ -66,6 +67,32 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Iniciar sesión "
+                android:textColor="#fff"
+                android:textSize="18sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="@color/colorAccent"
+        app:cardCornerRadius="25dp"
+        app:cardElevation="10dp"
+        android:id="@+id/invitadoButtom"
+        android:layout_marginBottom="31dp"
+        android:layout_above="@+id/botonRegistro"
+        android:layout_centerHorizontal="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textInvitado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Entrar como invitado "
                 android:textColor="#fff"
                 android:textSize="18sp" />
         </RelativeLayout>

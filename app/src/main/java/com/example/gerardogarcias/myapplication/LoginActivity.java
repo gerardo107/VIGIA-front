@@ -19,10 +19,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
         goToRegistro();
-
+        goToMainI();
+        goToMain();
 
     }
-
+    //go to register  layout
     private void  goToRegistro(){
 
         TextView RegisterButton = (TextView) findViewById(R.id.botonRegistro);
@@ -34,5 +35,29 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    //go to main layout without login
+    private void  goToMainI(){
+        CardView MainButton = (CardView) findViewById(R.id.invitadoButtom);
+        MainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void  goToMain(){
+        CardView MainButton = (CardView) findViewById(R.id.mainButton);
+        MainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
 }

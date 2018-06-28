@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
+        <!-- Sección de Menu -->
         <item
             android:id="@+id/nav_home"
             android:checked="true"
@@ -9,20 +10,16 @@
             android:title="@string/home_item" />
         <item
             android:id="@+id/nav_productos"
-            android:icon="@drawable/ic_store"
-            android:title="@string/productos_item" />
+            android:icon="@drawable/ic_file_document"
+            android:title="@string/incidencias_item" />
         <item
             android:id="@+id/nav_carrito"
-            android:icon="@drawable/ic_shopping_cart"
-            android:title="@string/compras_item" />
+            android:icon="@drawable/ic_file_document"
+            android:title="@string/reportes_item" />
         <item
             android:id="@+id/nav_ordenes"
-            android:icon="@drawable/ic_truck"
-            android:title="@string/ordenes_item" />
-        <item
-            android:id="@+id/nav_facturas"
             android:icon="@drawable/ic_file_document"
-            android:title="@string/facturas_item" />
+            android:title="@string/solicitudes_item" />
 
         <!-- Sección de configuración -->
         <item
