@@ -8,16 +8,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * Fragmento para el contenido principal
- */
-public class PlaceholderFragment extends Fragment {
+
+public class ReportesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.section_fragment, container, false);
+        final View view = inflater.inflate(R.layout.reportes_fragment, container, false);
 
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Fragment Inbox");
 
@@ -29,7 +27,7 @@ public class PlaceholderFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                textViewInboxFragment.setText("This is the Inbox Fragment");
+                textViewInboxFragment.setText("This is the Inbox Fragmentss");
 
 
             }
@@ -37,5 +35,4 @@ public class PlaceholderFragment extends Fragment {
 
         return view;
     }
-
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,21 +49,21 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue= Volley.newRequestQueue(this);
 
         JsonObjectRequest objectRequest =new JsonObjectRequest(
-        Request.Method.GET,
-        URL,
-        null,
-        new Response.Listener<JSONObject>(){
-            @Override
-            public void onResponse (JSONObject response){
-                Log.e("Rest Response",response.toString());
-            }
-        },
-        new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error){
-                Log.e("Rest Response",error.toString());
-            }
-        }
+                Request.Method.GET,
+                URL,
+                null,
+                new Response.Listener<JSONObject>(){
+                    @Override
+                    public void onResponse (JSONObject response){
+                        Log.e("Rest Response",response.toString());
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error){
+                        Log.e("Rest Response",error.toString());
+                    }
+                }
         );
 
         requestQueue.add(objectRequest);
@@ -71,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
-            setupDrawerContent(navigationView);
+            setupNavigationDrawerContent(navigationView);
         }
 
         drawerTitle = getResources().getString(R.string.home_item);
         if (savedInstanceState == null) {
-            selectItem(drawerTitle);
+            setFragment(0);
         }
 
     }
@@ -93,21 +95,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setupDrawerContent(NavigationView navigationView) {
+    private void setupNavigationDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
-
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        // Marcar item presionado
-                        menuItem.setChecked(true);
-                        // Crear nuevo fragmento
-                        String title = menuItem.getTitle().toString();
-                        selectItem(title);
+                        switch (menuItem.getItemId()) {
+                            case R.id.nav_home:
+                                menuItem.setChecked(true);
+                                setFragment(0);
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                return true;
+                            case R.id.nav_productos:
+                                menuItem.setChecked(true);
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                setFragment(1);
+                                return true;
+                            case R.id.nav_carrito:
+                                menuItem.setChecked(true);
+                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                return true;
+                            case R.id.nav_ordenes:
+                                menuItem.setChecked(true);
+                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                return true;
+                            case R.id.nav_log_out:
+                                menuItem.setChecked(true);
+                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                drawerLayout.closeDrawer(GravityCompat.START);
+                                //Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                                //startActivity(intent);
+                                return true;
+
+
+                        }
                         return true;
                     }
-                }
-        );
+                });
     }
 
 
@@ -132,23 +158,25 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void selectItem(String title) {
-        // Enviar título como arguemento del fragmento
-        Bundle args = new Bundle();
-        args.putString(PlaceholderFragment.ARG_SECTION_TITLE, title);
-
-        Fragment fragment = PlaceholderFragment.newInstance(title);
-        fragment.setArguments(args);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.main_content, fragment)
-                .commit();
-
-        drawerLayout.closeDrawers(); // Cerrar drawer
-
-        setTitle(title); // Setear título actual
-
+    public void setFragment(int position) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (position) {
+            case 0:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                PlaceholderFragment placeholderFragment = new PlaceholderFragment();
+                fragmentTransaction.replace(R.id.fragment, placeholderFragment);
+                fragmentTransaction.commit();
+                break;
+            case 1:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                ReportesFragment reportesFragment = new ReportesFragment();
+                fragmentTransaction.replace(R.id.fragment, reportesFragment);
+                fragmentTransaction.commit();
+                break;
+        }
     }
 
 
