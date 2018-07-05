@@ -44,29 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        String URL="http://10.0.2.2:3000/requests";
 
-        RequestQueue requestQueue= Volley.newRequestQueue(this);
-
-        JsonObjectRequest objectRequest =new JsonObjectRequest(
-                Request.Method.GET,
-                URL,
-                null,
-                new Response.Listener<JSONObject>(){
-                    @Override
-                    public void onResponse (JSONObject response){
-                        Log.e("Rest Response",response.toString());
-                    }
-                },
-                new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error){
-                        Log.e("Rest Response",error.toString());
-                    }
-                }
-        );
-
-        requestQueue.add(objectRequest);
 
         setToolbar(); // Setear Toolbar como action bar
 
