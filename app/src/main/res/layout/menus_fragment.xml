@@ -7,6 +7,18 @@
     android:layout_marginTop="160dp"
     android:id="@+id/parentLayout">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp">
 
+        <FrameLayout
+            android:id="@+id/fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -1,10 +1,9 @@
 package com.example.gerardogarcias.myapplication;
 
-import android.app.VoiceInteractor;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -13,20 +12,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -101,10 +90,10 @@ public class MainActivity extends AppCompatActivity {
                                 return true;
                             case R.id.nav_log_out:
                                 menuItem.setChecked(true);
-                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                goToLogin();
+                                //Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
                                 drawerLayout.closeDrawer(GravityCompat.START);
-                                //Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                                //startActivity(intent);
+
                                 return true;
 
 
@@ -170,6 +159,16 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
+    //metodo regresar a login
+    private void  goToLogin(){
+        CardView MainButton = (CardView) findViewById(R.id.invitadoButtom);
+        MainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 
 }

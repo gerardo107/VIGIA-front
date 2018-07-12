@@ -1,8 +1,11 @@
 package com.example.gerardogarcias.myapplication;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import android.support.v7.widget.CardView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +41,7 @@ public class MainMenuFragment extends Fragment {
     int valueDP_Height,Value_In_Pixel_Height;
     int valueDP_Radius,Value_In_Pixel_Radius;
     int valueDP_Elevation,Value_In_Pixel_Elevation;
+    int idbutton;
 
     Button myButton;
     @Override
@@ -49,6 +55,9 @@ public class MainMenuFragment extends Fragment {
 
         jsonParse();
 
+
+
+
         return view;
     }
 
@@ -61,10 +70,8 @@ public class MainMenuFragment extends Fragment {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-
-
-                            for(int i =0; i < response.length(); i++){
-
+                            for(int  i =0; i < response.length(); i++){
+                                final int finalI = i;
                                 JSONObject requests = response.getJSONObject(i);
 
                                 String name = requests.getString("name" );
@@ -98,6 +105,16 @@ public class MainMenuFragment extends Fragment {
                                 mainMenuButtons.setRadius(Value_In_Pixel_Radius);
                                 mainMenuButtons.setCardBackgroundColor(Color.parseColor("#FF4081"));
                                 mainMenuButtons.setCardElevation(Value_In_Pixel_Elevation);
+                                mainMenuButtons.setId(i);
+                                idbutton = mainMenuButtons.getId();
+
+                                //seleccionar los botones
+                                mainMenuButtons.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        goToSecondMenus(finalI);
+                                    }
+                                });
 
                                 //caracteristicas del texto
                                 mainMenuText =new TextView(getActivity().getApplicationContext());
@@ -106,14 +123,11 @@ public class MainMenuFragment extends Fragment {
                                 mainMenuText.setTextColor(Color.parseColor("#FFFFFF"));
                                 mainMenuText.setTextSize(18);
 
-
                                 //agregar el texto a los botones
                                 mainMenuButtons.addView(mainMenuText);
 
                                 //agregar los botones al layout
                                 parent.addView(mainMenuButtons);
-
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -128,7 +142,48 @@ public class MainMenuFragment extends Fragment {
                 }
         );
         requestQueue.add(request);
+    }
 
+
+    private void  goToSecondMenus(int id){
+
+        if(id ==0){
+            setFragment(0);
+        }
+        if(id ==1){
+            setFragment(1);
+        }
+        if (id ==2){
+            setFragment(2);
+        }
 
     }
+    public void setFragment(int position) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (position) {
+            case 0:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                SolicitudesFragment solicitudesFragment = new SolicitudesFragment();
+                fragmentTransaction.replace(R.id.fragment, solicitudesFragment);
+                fragmentTransaction.commit();
+                break;
+            case 1:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                ReportesFragment reportesFragment = new ReportesFragment();
+                fragmentTransaction.replace(R.id.fragment, reportesFragment);
+                fragmentTransaction.commit();
+                break;
+            case 2:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                IncidenciasFragment incidenciasFragment = new IncidenciasFragment();
+                fragmentTransaction.replace(R.id.fragment, incidenciasFragment);
+                fragmentTransaction.commit();
+                break;
+        }
+    }
+
 }
