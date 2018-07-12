@@ -84,19 +84,19 @@ public class MainActivity extends AppCompatActivity {
                                 setFragment(0);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.nav_productos:
+                            case R.id.nav_solicitudes:
                                 menuItem.setChecked(true);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 setFragment(1);
                                 return true;
-                            case R.id.nav_carrito:
+                            case R.id.nav_reportes:
                                 menuItem.setChecked(true);
-                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                setFragment(2);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
-                            case R.id.nav_ordenes:
+                            case R.id.nav_incidencias:
                                 menuItem.setChecked(true);
-                                Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();
+                                setFragment(3);
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
                             case R.id.nav_log_out:
@@ -143,15 +143,29 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                PlaceholderFragment placeholderFragment = new PlaceholderFragment();
-                fragmentTransaction.replace(R.id.fragment, placeholderFragment);
+                MainMenuFragment mainMenuFragmentFragment = new MainMenuFragment();
+                fragmentTransaction.replace(R.id.fragment, mainMenuFragmentFragment);
                 fragmentTransaction.commit();
                 break;
             case 1:
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
+                SolicitudesFragment solicitudesFragment = new SolicitudesFragment();
+                fragmentTransaction.replace(R.id.fragment, solicitudesFragment);
+                fragmentTransaction.commit();
+                break;
+            case 2:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
                 ReportesFragment reportesFragment = new ReportesFragment();
                 fragmentTransaction.replace(R.id.fragment, reportesFragment);
+                fragmentTransaction.commit();
+                break;
+            case 3:
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                IncidenciasFragment incidenciasFragment = new IncidenciasFragment();
+                fragmentTransaction.replace(R.id.fragment, incidenciasFragment);
                 fragmentTransaction.commit();
                 break;
         }

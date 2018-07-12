@@ -23,9 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
-
-public class ReportesFragment extends Fragment {
+/**
+ * Fragmento para el contenido principal
+ */
+public class MainMenuFragment extends Fragment {
 
     LinearLayout parent;
     TextView mainMenuText;
@@ -36,6 +37,7 @@ public class ReportesFragment extends Fragment {
     int valueDP_Radius,Value_In_Pixel_Radius;
     int valueDP_Elevation,Value_In_Pixel_Elevation;
 
+    Button myButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -48,12 +50,11 @@ public class ReportesFragment extends Fragment {
         jsonParse();
 
         return view;
-
-
     }
+
     private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/2/events";
+        String url="http://10.0.2.2:3000/requests";
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
@@ -103,7 +104,7 @@ public class ReportesFragment extends Fragment {
                                 mainMenuText.setText(name);
                                 mainMenuText.setGravity(Gravity.CENTER);
                                 mainMenuText.setTextColor(Color.parseColor("#FFFFFF"));
-                                mainMenuText.setTextSize(16);
+                                mainMenuText.setTextSize(18);
 
 
                                 //agregar el texto a los botones
@@ -127,6 +128,7 @@ public class ReportesFragment extends Fragment {
                 }
         );
         requestQueue.add(request);
+
 
     }
 }

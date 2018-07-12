@@ -1,34 +1,30 @@
 package com.example.gerardogarcias.myapplication;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import android.support.v7.widget.CardView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-/**
- * Fragmento para el contenido principal
- */
-public class PlaceholderFragment extends Fragment {
+public class SolicitudesFragment extends Fragment {
 
     LinearLayout parent;
     TextView mainMenuText;
@@ -39,30 +35,24 @@ public class PlaceholderFragment extends Fragment {
     int valueDP_Radius,Value_In_Pixel_Radius;
     int valueDP_Elevation,Value_In_Pixel_Elevation;
 
-    Button myButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.section_fragment, container, false);
-
-
-
-
-
+        final View view = inflater.inflate(R.layout.menus_fragment, container, false);
 
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         parent=view.findViewById(R.id.parentLayout);
 
-
-        jsonParese();
+        jsonParse();
 
         return view;
-    }
 
-    private void jsonParese(){
+
+    }
+    private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests";
+        String url="http://10.0.2.2:3000/requests/1/events";
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
@@ -78,12 +68,12 @@ public class PlaceholderFragment extends Fragment {
                                 String name = requests.getString("name" );
 
                                 //cambiando de valores de dp a px para el Width de los botones
-                                valueDP_Width = 300;//value in dp
+                                valueDP_Width = 340;//value in dp
                                 Value_In_Pixel_Width = (int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, valueDP_Width, getResources().getDisplayMetrics());
 
                                 //cambiando de valores de dp a px para el Height de los botones
-                                valueDP_Height = 50;//value in dp
+                                valueDP_Height = 60;//value in dp
                                 Value_In_Pixel_Height = (int) TypedValue.applyDimension(
                                         TypedValue.COMPLEX_UNIT_DIP, valueDP_Height, getResources().getDisplayMetrics());
 
@@ -136,7 +126,6 @@ public class PlaceholderFragment extends Fragment {
                 }
         );
         requestQueue.add(request);
-
 
     }
 }

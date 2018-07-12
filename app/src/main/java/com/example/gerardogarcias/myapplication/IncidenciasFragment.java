@@ -3,29 +3,28 @@ package com.example.gerardogarcias.myapplication;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import android.support.v7.widget.CardView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-
-
-public class ReportesFragment extends Fragment {
+public class IncidenciasFragment extends Fragment {
 
     LinearLayout parent;
     TextView mainMenuText;
@@ -53,7 +52,7 @@ public class ReportesFragment extends Fragment {
     }
     private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/2/events";
+        String url="http://10.0.2.2:3000/requests/3/events";
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
@@ -103,7 +102,7 @@ public class ReportesFragment extends Fragment {
                                 mainMenuText.setText(name);
                                 mainMenuText.setGravity(Gravity.CENTER);
                                 mainMenuText.setTextColor(Color.parseColor("#FFFFFF"));
-                                mainMenuText.setTextSize(16);
+                                mainMenuText.setTextSize(18);
 
 
                                 //agregar el texto a los botones
