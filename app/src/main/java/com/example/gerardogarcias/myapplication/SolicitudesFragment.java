@@ -39,7 +39,7 @@ public class SolicitudesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.menus_fragment, container, false);
+        final View view = inflater.inflate(R.layout.menus_content, container, false);
 
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         parent=view.findViewById(R.id.parentLayout);

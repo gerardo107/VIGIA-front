@@ -1,6 +1,5 @@
 package com.example.gerardogarcias.myapplication;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import android.support.v7.widget.CardView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,14 +39,14 @@ public class MainMenuFragment extends Fragment {
     int valueDP_Height,Value_In_Pixel_Height;
     int valueDP_Radius,Value_In_Pixel_Radius;
     int valueDP_Elevation,Value_In_Pixel_Elevation;
-    int idbutton;
+
 
     Button myButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.menus_fragment, container, false);
+        final View view = inflater.inflate(R.layout.menus_content, container, false);
 
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         parent=view.findViewById(R.id.parentLayout);
@@ -106,7 +104,6 @@ public class MainMenuFragment extends Fragment {
                                 mainMenuButtons.setCardBackgroundColor(Color.parseColor("#FF4081"));
                                 mainMenuButtons.setCardElevation(Value_In_Pixel_Elevation);
                                 mainMenuButtons.setId(i);
-                                idbutton = mainMenuButtons.getId();
 
                                 //seleccionar los botones
                                 mainMenuButtons.setOnClickListener(new View.OnClickListener() {
@@ -169,20 +166,7 @@ public class MainMenuFragment extends Fragment {
                 fragmentTransaction.replace(R.id.fragment, solicitudesFragment);
                 fragmentTransaction.commit();
                 break;
-            case 1:
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                ReportesFragment reportesFragment = new ReportesFragment();
-                fragmentTransaction.replace(R.id.fragment, reportesFragment);
-                fragmentTransaction.commit();
-                break;
-            case 2:
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                IncidenciasFragment incidenciasFragment = new IncidenciasFragment();
-                fragmentTransaction.replace(R.id.fragment, incidenciasFragment);
-                fragmentTransaction.commit();
-                break;
+
         }
     }
 

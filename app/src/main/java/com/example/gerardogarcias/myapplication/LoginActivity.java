@@ -42,21 +42,14 @@ public class LoginActivity extends AppCompatActivity {
         MainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this,MainMenuActivity.class);
                 startActivity(intent);
             }
         });
     }
 
     private void  goToMain(){
-        CardView MainButton = (CardView) findViewById(R.id.mainButton);
-        MainButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                startActivity(intent);
-            }
-        });
+
     }
 
 

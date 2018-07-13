@@ -25,12 +25,16 @@
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label=""
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".MainActivity">
-
+        <activity android:name=".MainMenuActivity">
+        </activity>
+        <activity android:name=".SolicitudesActivity">
+        </activity>
+        <activity android:name=".ReportesActivity">
+        </activity>
+        <activity android:name=".IncidenciasActivity">
         </activity>
 
     </application>
