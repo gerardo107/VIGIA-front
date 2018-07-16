@@ -2,6 +2,9 @@ package com.example.gerardogarcias.myapplication;
 
 import android.app.VoiceInteractor;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,6 +16,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +31,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
     /**
@@ -44,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         setToolbar(); // Setear Toolbar como action bar
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -59,6 +64,22 @@ public class MainActivity extends AppCompatActivity {
             setFragment(0);
         }
 
+    }
+
+    private void printKeyHash() {
+        try{
+            PackageInfo info = getPackageManager().getPackageInfo("com.example.gerardogarcias.myapplication",
+                    PackageManager.GET_SIGNATURES);
+            for(Signature signature:info.signatures){
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KEYHASH", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setToolbar() {

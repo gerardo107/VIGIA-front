@@ -17,4 +17,8 @@
 <string name="solicitudes_item">Solicitud de auxilio</string>
 <string name="log_out_item">Cerrar Sesión</string>
 <string name="configuracion_item">Configuración</string>
+
+    <string name="FACEBOOK_APP_ID">2130448207243882</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">a1bf8a18c3f6ccd024d4cb8505747f8c</string>
+
 </resources>
