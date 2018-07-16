@@ -42,7 +42,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="0dp"
-            app:cardBackgroundColor="@color/colorAccent"
+            app:cardBackgroundColor="@color/colorAccent2"
             app:cardCornerRadius="25dp"
             app:cardElevation="10dp">
 
@@ -66,7 +66,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="0dp"
             android:layout_marginStart="25dp"
-            app:cardBackgroundColor="@color/colorAccent"
+            app:cardBackgroundColor="@color/colorAccent2"
             app:cardCornerRadius="25dp"
             app:cardElevation="10dp">
 

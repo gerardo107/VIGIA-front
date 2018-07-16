@@ -9,17 +9,17 @@
             android:icon="@drawable/ic_home"
             android:title="@string/home_item" />
         <item
-            android:id="@+id/nav_productos"
+            android:id="@+id/nav_solicitudes"
             android:icon="@drawable/ic_file_document"
-            android:title="@string/incidencias_item" />
+            android:title="@string/solicitudes_item" />
         <item
-            android:id="@+id/nav_carrito"
+            android:id="@+id/nav_reportes"
             android:icon="@drawable/ic_file_document"
             android:title="@string/reportes_item" />
         <item
-            android:id="@+id/nav_ordenes"
+            android:id="@+id/nav_incidencias"
             android:icon="@drawable/ic_file_document"
-            android:title="@string/solicitudes_item" />
+            android:title="@string/incidencias_item" />
 
         <!-- Sección de configuración -->
         <item
