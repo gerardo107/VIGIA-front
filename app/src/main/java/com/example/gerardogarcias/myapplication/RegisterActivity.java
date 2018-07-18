@@ -19,7 +19,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        goToLogin();
+        //goToLogin();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+    /*
     private void  goToLogin(){
         CardView MainButton = (CardView) findViewById(R.id.buttomBack);
         MainButton.setOnClickListener(new View.OnClickListener() {
@@ -54,4 +54,5 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+    */
 }
