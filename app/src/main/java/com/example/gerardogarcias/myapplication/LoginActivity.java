@@ -18,23 +18,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
-        goToRegistro();
         goToMainI();
         goToMain();
 
     }
-    //go to register  layout
-    private void  goToRegistro(){
 
-        TextView RegisterButton = (TextView) findViewById(R.id.botonRegistro);
-
-        RegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-            }
-        });
-    }
 
     //go to main layout without login
     private void  goToMainI(){
