@@ -7,7 +7,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VIGIA"
@@ -21,7 +21,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".RegisterActivity"
@@ -39,15 +38,25 @@
         <activity
             android:name="com.facebook.accountkit.ui.AccountKitActivity" />
 
-        <activity android:name=".MainMenuActivity">
+        <activity
+            android:name=".MainMenuActivity"
+            android:label="@string/home_item">
         </activity>
-        <activity android:name=".SolicitudesActivity">
+        <activity
+            android:name=".SolicitudesActivity"
+            android:label="@string/solicitudes_item">
         </activity>
-        <activity android:name=".ReportesActivity">
-        </activity>
-        <activity android:name=".IncidenciasActivity">
-        </activity>
+        <activity
+            android:name=".ReportesActivity"
+            android:label="@string/reportes_item">
 
+        </activity>
+        <activity
+            android:name=".IncidenciasActivity"
+            android:label="@string/incidencias_item">
+
+        </activity>
+        <activity android:name=".prueba"></activity>
     </application>
 
 </manifest>

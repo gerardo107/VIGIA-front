@@ -124,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-        goToRegistro();
         goToMainI();
         goToMain();
 
@@ -296,17 +295,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //go to register  layout
-    private void  goToRegistro(){
-
-        TextView RegisterButton = (TextView) findViewById(R.id.botonRegistro);
-
-        RegisterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-            }
-        });
-    }
+    private void  goToRegistro(){}
 
     //go to main layout without login
     private void  goToMainI(){
