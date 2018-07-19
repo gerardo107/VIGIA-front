@@ -61,6 +61,68 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Check session
+        if(AccountKit.getCurrentAccessToken() != null){
+            final AlertDialog alertDialog = new SpotsDialog.Builder()
+                    .setContext(LoginActivity.this)
+                    .setMessage("Por favor espera...")
+                    .build();
+            alertDialog.show();
+
+            // auto login
+            AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
+                @Override
+                public void onSuccess(final Account account) {
+                    mService.checkuser(account.getPhoneNumber().toString())
+                            .enqueue(new Callback<CheckUserResponse>() {
+                                @Override
+                                public void onResponse(Call<CheckUserResponse> call, Response<CheckUserResponse> response) {
+                                    Log.d("SOME ERROR ON AUTO-LOGIN", response.message());
+                                    CheckUserResponse userResponse = response.body();
+                                    if(userResponse.isExists()){
+                                        Log.d("SI USER ON AUTO-LOGIN", "user exists");
+                                        // Get user information
+
+                                        mService.getuser(account.getPhoneNumber().toString())
+                                                .enqueue(new Callback<User>() {
+                                                    @Override
+                                                    public void onResponse(Call<User> call, Response<User> response) {
+                                                        // If user already exists, just start new activity
+                                                        alertDialog.dismiss();
+                                                        Common.currentUser = response.body();
+
+                                                        startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
+                                                        finish(); // Cerrar LoginActivity
+                                                    }
+
+                                                    @Override
+                                                    public void onFailure(Call<User> call, Throwable t) {
+                                                        Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }else{
+                                        // Registrar nuevo usuario si no existe
+                                        Log.d("NO USER", "no exists");
+                                        alertDialog.dismiss();
+
+                                        showRegisterDialog(account.getPhoneNumber().toString());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<CheckUserResponse> call, Throwable t) {
+                                    Log.d("ERROR ON FAILURE", t.getMessage());
+                                }
+                            });
+                }
+
+                @Override
+                public void onError(AccountKitError accountKitError) {
+                    Log.d("ERROR", accountKitError.getErrorType().getMessage());
+                }
+            });
+        }
+
 
         goToRegistro();
         goToMainI();
@@ -112,8 +174,24 @@ public class LoginActivity extends AppCompatActivity {
                                             CheckUserResponse userResponse = response.body();
                                             if(userResponse.isExists()){
                                                 Log.d("SI USER", "user exists");
-                                                // If user already exists, just start new activity
-                                                alertDialog.dismiss();
+                                                // Get user information
+
+                                                mService.getuser(account.getPhoneNumber().toString())
+                                                        .enqueue(new Callback<User>() {
+                                                            @Override
+                                                            public void onResponse(Call<User> call, Response<User> response) {
+                                                                // If user already exists, just start new activity
+                                                                alertDialog.dismiss();
+                                                                //Common.currentUser = response.body();
+                                                                startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
+                                                                finish(); // Cerrar LoginActivity
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Call<User> call, Throwable t) {
+                                                                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
                                             }else{
                                                 // Registrar nuevo usuario si no existe
                                                 Log.d("NO USER", "no exists");
@@ -199,7 +277,10 @@ public class LoginActivity extends AppCompatActivity {
                                 User user = response.body();
                                 if(TextUtils.isEmpty(user.getError_msg())){
                                     Toast.makeText(LoginActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+                                    Common.currentUser = response.body();
                                     //start new activity
+                                    startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
+                                    finish(); // Cerrar LoginActivity
                                 }
                             }
 

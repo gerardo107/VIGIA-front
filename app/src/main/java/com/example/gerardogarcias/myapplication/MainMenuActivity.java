@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -26,13 +28,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gerardogarcias.myapplication.Util.Common;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class MainMenuActivity extends AppCompatActivity {
+public class MainMenuActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
     /**
      * Instancia del drawer
      */
@@ -52,6 +56,8 @@ public class MainMenuActivity extends AppCompatActivity {
     int valueDP_Radius, Value_In_Pixel_Radius;
     int valueDP_Elevation, Value_In_Pixel_Elevation;
     Context mContext;
+
+    TextView txt_name, txt_phone;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +82,13 @@ public class MainMenuActivity extends AppCompatActivity {
             jsonParse();
         }
 
+        View headerView = navigationView.getHeaderView(0);
+        txt_name = (TextView)headerView.findViewById(R.id.txt_name);
+        txt_phone = (TextView)headerView.findViewById(R.id.txt_phone);
 
+        // set information
+        txt_name.setText(Common.currentUser.getName());
+        txt_phone.setText(Common.currentUser.getPhone());
     }
 
     private void setToolbar() {
@@ -276,4 +288,8 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
+    }
 }

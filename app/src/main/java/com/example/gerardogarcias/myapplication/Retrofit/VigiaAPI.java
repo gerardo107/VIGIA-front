@@ -20,4 +20,8 @@ public interface VigiaAPI {
                         @Field("lastname") String lastname,
                         @Field("email") String email,
                         @Field("address") String address);
+
+    @FormUrlEncoded
+    @POST("getuser")
+    Call<User> getuser(@Field("phone") String phone);
 }
