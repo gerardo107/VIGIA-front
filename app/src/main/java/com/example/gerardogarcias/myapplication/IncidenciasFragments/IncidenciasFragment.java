@@ -1,8 +1,10 @@
-package com.example.gerardogarcias.myapplication;
+package com.example.gerardogarcias.myapplication.IncidenciasFragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -18,14 +21,16 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gerardogarcias.myapplication.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class SolicitudesFragment extends Fragment {
+public class IncidenciasFragment extends Fragment {
 
+    private String drawerTitle;
     LinearLayout parent;
     TextView mainMenuText;
     CardView mainMenuButtons;
@@ -39,8 +44,9 @@ public class SolicitudesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.menus_content, container, false);
+        final View view = inflater.inflate(R.layout.menus_fragment, container, false);
 
+        drawerTitle = getResources().getString(R.string.solicitudes_item);
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         parent=view.findViewById(R.id.parentLayout);
 
@@ -52,7 +58,7 @@ public class SolicitudesFragment extends Fragment {
     }
     private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/1/events";
+        String url="http://10.0.2.2:3000/requests/3/events";
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
@@ -62,6 +68,7 @@ public class SolicitudesFragment extends Fragment {
 
 
                             for(int i =0; i < response.length(); i++){
+                                final int finalI = i;
 
                                 JSONObject requests = response.getJSONObject(i);
 
@@ -94,8 +101,17 @@ public class SolicitudesFragment extends Fragment {
                                 params.gravity = Gravity.CENTER;
                                 mainMenuButtons.setLayoutParams(params);
                                 mainMenuButtons.setRadius(Value_In_Pixel_Radius);
-                                mainMenuButtons.setCardBackgroundColor(Color.parseColor("#FF4081"));
+                                mainMenuButtons.setCardBackgroundColor(Color.parseColor("#00A5E3"));
                                 mainMenuButtons.setCardElevation(Value_In_Pixel_Elevation);
+                                mainMenuButtons.setId(finalI);
+
+                                //seleccionar los botones
+                                mainMenuButtons.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        goToSolicitudesFragments(finalI);
+                                    }
+                                });
 
                                 //caracteristicas del texto
                                 mainMenuText =new TextView(getActivity().getApplicationContext());
@@ -127,5 +143,45 @@ public class SolicitudesFragment extends Fragment {
         );
         requestQueue.add(request);
 
+    }
+    private void  goToSolicitudesFragments(int id){
+
+        if(id ==0){
+            setFragment(0);
+        }
+        if(id ==1){
+            setFragment(1);
+        }
+        if (id ==2){
+            setFragment(2);
+        }
+
+    }
+    public void setFragment(int position) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (position) {
+            case 0:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                EventosProteccionFragment eventosProteccionFragment = new EventosProteccionFragment();
+                fragmentTransaction.replace(R.id.fragment, eventosProteccionFragment);
+                fragmentTransaction.commit();
+                break;
+            case 1:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                EventosSeguridadFragment eventosSeguridadFragment = new EventosSeguridadFragment();
+                fragmentTransaction.replace(R.id.fragment, eventosSeguridadFragment);
+                fragmentTransaction.commit();
+                break;
+            case 2:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                EventosVialesFragment eventosVialesFragment = new EventosVialesFragment();
+                fragmentTransaction.replace(R.id.fragment, eventosVialesFragment);
+                fragmentTransaction.commit();
+                break;
+        }
     }
 }

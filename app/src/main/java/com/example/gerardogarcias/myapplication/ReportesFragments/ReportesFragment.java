@@ -1,38 +1,36 @@
-package com.example.gerardogarcias.myapplication;
+package com.example.gerardogarcias.myapplication.ReportesFragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.gerardogarcias.myapplication.SolicitudesFragments.SolicitudesFragment;
-
-import android.support.v7.widget.CardView;
+import com.example.gerardogarcias.myapplication.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
-/**
- * Fragmento para el contenido principal
- */
-public class MainMenuFragment extends Fragment {
+public class ReportesFragment extends Fragment {
 
+    private String drawerTitle;
     LinearLayout parent;
     TextView mainMenuText;
     CardView mainMenuButtons;
@@ -42,36 +40,36 @@ public class MainMenuFragment extends Fragment {
     int valueDP_Radius,Value_In_Pixel_Radius;
     int valueDP_Elevation,Value_In_Pixel_Elevation;
 
-
-    Button myButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.menus_content, container, false);
+        final View view = inflater.inflate(R.layout.menus_fragment, container, false);
 
+        drawerTitle = getResources().getString(R.string.solicitudes_item);
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         parent=view.findViewById(R.id.parentLayout);
 
         jsonParse();
 
-
-
-
         return view;
-    }
 
+
+    }
     private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests";
+        String url="http://10.0.2.2:3000/requests/2/events";
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            for(int  i =0; i < response.length(); i++){
+
+
+                            for(int i =0; i < response.length(); i++){
                                 final int finalI = i;
+
                                 JSONObject requests = response.getJSONObject(i);
 
                                 String name = requests.getString("name" );
@@ -103,15 +101,15 @@ public class MainMenuFragment extends Fragment {
                                 params.gravity = Gravity.CENTER;
                                 mainMenuButtons.setLayoutParams(params);
                                 mainMenuButtons.setRadius(Value_In_Pixel_Radius);
-                                mainMenuButtons.setCardBackgroundColor(Color.parseColor("#FF4081"));
+                                mainMenuButtons.setCardBackgroundColor(Color.parseColor("#00A5E3"));
                                 mainMenuButtons.setCardElevation(Value_In_Pixel_Elevation);
-                                mainMenuButtons.setId(i);
+                                mainMenuButtons.setId(finalI);
 
                                 //seleccionar los botones
                                 mainMenuButtons.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
-                                        goToSecondMenus(finalI);
+                                        goToSolicitudesFragments(finalI);
                                     }
                                 });
 
@@ -120,13 +118,16 @@ public class MainMenuFragment extends Fragment {
                                 mainMenuText.setText(name);
                                 mainMenuText.setGravity(Gravity.CENTER);
                                 mainMenuText.setTextColor(Color.parseColor("#FFFFFF"));
-                                mainMenuText.setTextSize(18);
+                                mainMenuText.setTextSize(16);
+
 
                                 //agregar el texto a los botones
                                 mainMenuButtons.addView(mainMenuText);
 
                                 //agregar los botones al layout
                                 parent.addView(mainMenuButtons);
+
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -141,10 +142,9 @@ public class MainMenuFragment extends Fragment {
                 }
         );
         requestQueue.add(request);
+
     }
-
-
-    private void  goToSecondMenus(int id){
+    private void  goToSolicitudesFragments(int id){
 
         if(id ==0){
             setFragment(0);
@@ -164,13 +164,24 @@ public class MainMenuFragment extends Fragment {
             case 0:
                 fragmentManager = getFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                SolicitudesFragment solicitudesFragment = new SolicitudesFragment();
-                fragmentTransaction.replace(R.id.fragment, solicitudesFragment);
+                ActuacionFragment actuacionFragment = new ActuacionFragment();
+                fragmentTransaction.replace(R.id.fragment, actuacionFragment);
                 fragmentTransaction.commit();
                 break;
-
+            case 1:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                DeficienciaFragment deficienciaFragment = new DeficienciaFragment();
+                fragmentTransaction.replace(R.id.fragment, deficienciaFragment);
+                fragmentTransaction.commit();
+                break;
+            case 2:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                MantenimientoFragment mantenimientoFragment = new MantenimientoFragment();
+                fragmentTransaction.replace(R.id.fragment, mantenimientoFragment);
+                fragmentTransaction.commit();
+                break;
         }
     }
-
 }
-

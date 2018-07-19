@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:top="8dp" android:bottom="8dp"
+        android:width="320dp">
+        <shape>
+            <solid android:background="@drawable/gradient" />
+            <corners android:radius="5dp"/>
+            <stroke
+                android:width="3dp"
+                android:color="#000000" />
+            <padding
+                android:top="16dp"
+                android:bottom="16dp"
+                android:left="8dp"
+                android:right="16dp"/>
+        </shape>
+    </item>
+</layer-list>
+<!--
+
+<RelativeLayout
+android:layout_width="match_parent"
+android:layout_height="70dp"
+android:background="@drawable/bg_spinner">
+<Spinner
+    style="@style/Widget.AppCompat.DropDownItem.Spinner"
+    android:layout_width="320dp"
+    android:layout_height="70dp"
+    android:id="@+id/sign_up_country"
+    />
+</RelativeLayout>-->
