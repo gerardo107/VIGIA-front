@@ -57,76 +57,71 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                startLoginPage(LoginType.PHONE);
+                if(AccountKit.getCurrentAccessToken() != null){
+                    final AlertDialog alertDialog = new SpotsDialog.Builder()
+                            .setContext(LoginActivity.this)
+                            .setMessage("Por favor espera...")
+                            .build();
+                    alertDialog.show();
+
+                    // auto login
+                    AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
+                        @Override
+                        public void onSuccess(final Account account) {
+                            mService.checkuser(account.getPhoneNumber().toString())
+                                    .enqueue(new Callback<CheckUserResponse>() {
+                                        @Override
+                                        public void onResponse(Call<CheckUserResponse> call, Response<CheckUserResponse> response) {
+                                            CheckUserResponse userResponse = response.body();
+                                            if(userResponse.isExists()){
+                                                Log.d("SI USER ON AUTO-LOGIN", "user exists");
+                                                // Get user information
+
+                                                mService.getuser(account.getPhoneNumber().toString())
+                                                        .enqueue(new Callback<User>() {
+                                                            @Override
+                                                            public void onResponse(Call<User> call, Response<User> response) {
+                                                                // If user already exists, just start new activity
+                                                                alertDialog.dismiss();
+                                                                Common.currentUser = response.body();
+
+                                                                startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
+                                                                finish(); // Cerrar LoginActivity
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Call<User> call, Throwable t) {
+                                                                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                            }else{
+                                                // Registrar nuevo usuario si no existe
+                                                Log.d("NO USER", "no exists");
+                                                alertDialog.dismiss();
+
+                                                showRegisterDialog(account.getPhoneNumber().toString());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<CheckUserResponse> call, Throwable t) {
+                                            Log.d("ERROR ON FAILURE", t.getMessage());
+                                        }
+                                    });
+                        }
+
+                        @Override
+                        public void onError(AccountKitError accountKitError) {
+                            Log.d("ERROR", accountKitError.getErrorType().getMessage());
+                        }
+                    });
+                }else {
+                    startLoginPage(LoginType.PHONE);
+                }
             }
         });
 
-        // Check session
-        if(AccountKit.getCurrentAccessToken() != null){
-            final AlertDialog alertDialog = new SpotsDialog.Builder()
-                    .setContext(LoginActivity.this)
-                    .setMessage("Por favor espera...")
-                    .build();
-            alertDialog.show();
-
-            // auto login
-            AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
-                @Override
-                public void onSuccess(final Account account) {
-                    mService.checkuser(account.getPhoneNumber().toString())
-                            .enqueue(new Callback<CheckUserResponse>() {
-                                @Override
-                                public void onResponse(Call<CheckUserResponse> call, Response<CheckUserResponse> response) {
-                                    Log.d("SOME ERROR ON AUTO-LOGIN", response.message());
-                                    CheckUserResponse userResponse = response.body();
-                                    if(userResponse.isExists()){
-                                        Log.d("SI USER ON AUTO-LOGIN", "user exists");
-                                        // Get user information
-
-                                        mService.getuser(account.getPhoneNumber().toString())
-                                                .enqueue(new Callback<User>() {
-                                                    @Override
-                                                    public void onResponse(Call<User> call, Response<User> response) {
-                                                        // If user already exists, just start new activity
-                                                        alertDialog.dismiss();
-                                                        Common.currentUser = response.body();
-
-                                                        startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
-                                                        finish(); // Cerrar LoginActivity
-                                                    }
-
-                                                    @Override
-                                                    public void onFailure(Call<User> call, Throwable t) {
-                                                        Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
-                                    }else{
-                                        // Registrar nuevo usuario si no existe
-                                        Log.d("NO USER", "no exists");
-                                        alertDialog.dismiss();
-
-                                        showRegisterDialog(account.getPhoneNumber().toString());
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<CheckUserResponse> call, Throwable t) {
-                                    Log.d("ERROR ON FAILURE", t.getMessage());
-                                }
-                            });
-                }
-
-                @Override
-                public void onError(AccountKitError accountKitError) {
-                    Log.d("ERROR", accountKitError.getErrorType().getMessage());
-                }
-            });
-        }
-
-
         goToMainI();
-        goToMain();
-
     }
 
     // Método que llama a la página de autenticación con el número telefonico
@@ -181,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
                                                             public void onResponse(Call<User> call, Response<User> response) {
                                                                 // If user already exists, just start new activity
                                                                 alertDialog.dismiss();
-                                                                //Common.currentUser = response.body();
+                                                                Common.currentUser = response.body();
                                                                 startActivity(new Intent(LoginActivity.this, MainMenuActivity.class));
                                                                 finish(); // Cerrar LoginActivity
                                                             }
@@ -303,15 +298,10 @@ public class LoginActivity extends AppCompatActivity {
         MainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Common.currentUser = null;
                 Intent intent = new Intent(LoginActivity.this,MainMenuActivity.class);
                 startActivity(intent);
             }
         });
     }
-
-    private void  goToMain(){
-
-    }
-
-
 }

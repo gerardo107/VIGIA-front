@@ -13,14 +13,18 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.ReportesFragments.ReportesFragment;
+import com.example.gerardogarcias.myapplication.Util.Common;
+import com.facebook.accountkit.AccountKit;
 
 
 public class ReportesActivity extends AppCompatActivity {
@@ -44,6 +48,8 @@ public class ReportesActivity extends AppCompatActivity {
     int valueDP_Elevation, Value_In_Pixel_Elevation;
     Context mContext;
 
+    TextView txt_name, txt_phone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,19 @@ public class ReportesActivity extends AppCompatActivity {
         drawerTitle = getResources().getString(R.string.reportes_item);
         if (savedInstanceState == null) {
             setFragment(0);
+        }
+
+        View headerView = navigationView.getHeaderView(0);
+        txt_name = (TextView)headerView.findViewById(R.id.txt_name);
+        txt_phone = (TextView)headerView.findViewById(R.id.txt_phone);
+
+        // set information
+        if(Common.currentUser != null){
+            txt_name.setText(Common.currentUser.getName());
+            txt_phone.setText(Common.currentUser.getPhone());
+        }else{
+            txt_name.setText("Invitado");
+            txt_phone.setText("Sin número");
         }
 
     }
@@ -111,6 +130,9 @@ public class ReportesActivity extends AppCompatActivity {
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
                             case R.id.nav_log_out:
+                                Log.d("CLOSE", "CLOSE SESSION");
+                                AccountKit.logOut();
+                                Common.currentUser = null;
                                 menuItem.setChecked(true);
                                 goToLogin();
                                 //Toast.makeText(MainActivity.this, "Launching " + menuItem.getTitle().toString(), Toast.LENGTH_SHORT).show();

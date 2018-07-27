@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.Util.Common;
+import com.facebook.accountkit.AccountKit;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,8 +88,14 @@ public class MainMenuActivity extends AppCompatActivity
         txt_phone = (TextView)headerView.findViewById(R.id.txt_phone);
 
         // set information
-        txt_name.setText(Common.currentUser.getName());
-        txt_phone.setText(Common.currentUser.getPhone());
+        if(Common.currentUser != null){
+            txt_name.setText(Common.currentUser.getName());
+            txt_phone.setText(Common.currentUser.getPhone());
+        }else{
+            txt_name.setText("Invitado");
+            txt_phone.setText("Sin número");
+        }
+
     }
 
     private void setToolbar() {
