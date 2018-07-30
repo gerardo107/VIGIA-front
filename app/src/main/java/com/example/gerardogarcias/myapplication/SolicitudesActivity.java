@@ -15,6 +15,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.SolicitudesFragments.OrganismosFragment;
 import com.example.gerardogarcias.myapplication.SolicitudesFragments.SolicitudesFragment;
+import com.example.gerardogarcias.myapplication.Util.Common;
 
 
 public class SolicitudesActivity extends AppCompatActivity {
@@ -43,6 +45,8 @@ public class SolicitudesActivity extends AppCompatActivity {
     int valueDP_Radius, Value_In_Pixel_Radius;
     int valueDP_Elevation, Value_In_Pixel_Elevation;
     Context mContext;
+
+    TextView txt_name, txt_phone,txt_mail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,21 @@ public class SolicitudesActivity extends AppCompatActivity {
         drawerTitle = getResources().getString(R.string.solicitudes_item);
         if (savedInstanceState == null) {
             setFragment(0);
+        }
+        View headerView = navigationView.getHeaderView(0);
+        txt_name = (TextView)headerView.findViewById(R.id.txt_name);
+        txt_mail = (TextView)headerView.findViewById(R.id.txt_mail);
+        txt_phone = (TextView)headerView.findViewById(R.id.txt_phone);
+
+        // set information
+        if(Common.currentUser != null){
+            txt_name.setText(Common.currentUser.getName());
+            txt_phone.setText(Common.currentUser.getPhone());
+            txt_mail.setText(Common.currentUser.getEmail());
+        }else{
+            txt_name.setText("Invitado");
+            txt_phone.setText("Sin telefono");
+            txt_mail.setText("Sin correo");
         }
 
     }
