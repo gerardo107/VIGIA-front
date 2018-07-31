@@ -1,13 +1,16 @@
 package com.example.gerardogarcias.myapplication.IncidenciasFragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -15,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gerardogarcias.myapplication.MainMenuActivity;
 import com.example.gerardogarcias.myapplication.R;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -32,6 +36,7 @@ public class EventosSeguridadFragment extends Fragment {
     MaterialBetterSpinner materialDesignSpinner;
     RequestQueue requestQueue;
     ArrayList<String> spinnerArray;
+    CardView Registrobutton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,7 +47,10 @@ public class EventosSeguridadFragment extends Fragment {
         drawerTitle = getResources().getString(R.string.solicitudes_item);
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         materialDesignSpinner = view.findViewById(R.id.android_material_design_spinner);
+        Registrobutton = view.findViewById(R.id.cardViewRegistrar);
+
         jsonParse();
+        goToMainI();
 
         return view;
 
@@ -100,6 +108,17 @@ public class EventosSeguridadFragment extends Fragment {
         );
         requestQueue.add(request);
 
+    }
+    private void  goToMainI(){
+
+        Registrobutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(),MainMenuActivity.class);
+                Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: 1234 " , Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+        });
     }
 
 }

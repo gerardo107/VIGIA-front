@@ -21,5 +21,6 @@
     <string name="solicitudes_item">Solicitud de auxilio</string>
     <string name="log_out_item">Cerrar Sesión</string>
     <string name="configuracion_item">Configuración</string>
+    <string name="Register">Registro</string>
 
 </resources>

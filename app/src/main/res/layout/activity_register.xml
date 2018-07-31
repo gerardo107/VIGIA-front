@@ -12,6 +12,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/gradient"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -30,6 +31,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/gradient"
         android:paddingTop="40dp">
         
         <LinearLayout
@@ -42,6 +44,8 @@
                 android:id="@+id/edt_name"
                 android:hint="Nombre"
                 android:textSize="18sp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
                 android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +83,7 @@
         <Button
             android:id="@+id/btn_register"
             android:text="Registrar"
-            android:background="@color/colorAccent2"
+            android:background="@color/colorAccent"
             android:textColor="#FFF"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"

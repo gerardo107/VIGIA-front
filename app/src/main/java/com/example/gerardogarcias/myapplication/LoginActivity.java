@@ -2,6 +2,7 @@ package com.example.gerardogarcias.myapplication;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -214,15 +215,25 @@ public class LoginActivity extends AppCompatActivity {
 
     private void showRegisterDialog(final String phone) {
         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-        builder.setTitle("REGISTER");
 
         LayoutInflater inflater = this.getLayoutInflater();
         View register_layout = inflater.inflate(R.layout.activity_register, null);
 
         final MaterialEditText edt_name = (MaterialEditText)register_layout.findViewById(R.id.edt_name);
+        edt_name.setTextColor(Color.parseColor("#FFFFFF"));
+        edt_name.setHintTextColor(Color.parseColor("#FFFFFF"));
+
         final MaterialEditText edt_lastname = (MaterialEditText)register_layout.findViewById(R.id.edt_lastname);
+        edt_lastname.setTextColor(Color.parseColor("#FFFFFF"));
+        edt_lastname.setHintTextColor(Color.parseColor("#FFFFFF"));
+
         final MaterialEditText edt_email = (MaterialEditText)register_layout.findViewById(R.id.edt_email);
+        edt_email.setTextColor(Color.parseColor("#FFFFFF"));
+        edt_email.setHintTextColor(Color.parseColor("#FFFFFF"));
+
         final MaterialEditText edt_address = (MaterialEditText)register_layout.findViewById(R.id.edt_address);
+        edt_address.setTextColor(Color.parseColor("#FFFFFF"));
+        edt_address.setHintTextColor(Color.parseColor("#FFFFFF"));
 
         Button btn_register = (Button)register_layout.findViewById(R.id.btn_register);
 
@@ -289,8 +300,6 @@ public class LoginActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    //go to register  layout
-    private void  goToRegistro(){}
 
     //go to main layout without login
     private void  goToMainI(){
