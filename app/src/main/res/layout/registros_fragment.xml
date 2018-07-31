@@ -58,7 +58,7 @@
             android:layout_below="@+id/TextViewDatos"
             android:id="@+id/EditTextNombre"
             android:layout_height="wrap_content"
-            android:hint="Nombre"
+            android:hint="Nombre(s)"
             android:inputType="textPersonName"
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
@@ -70,7 +70,7 @@
             android:layout_below="@+id/EditTextNombre"
             android:id="@+id/EditTextApellido"
             android:layout_height="wrap_content"
-            android:hint="Apellido"
+            android:hint="Apellido(s)"
             android:inputType="textPersonName"
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
@@ -110,7 +110,7 @@
             <EditText
                 android:id="@+id/EditTextCalle"
                 android:layout_height="wrap_content"
-                android:hint="Calle"
+                android:hint="Calle y numero"
                 android:inputType="textPersonName"
                 android:layout_marginStart="0dp"
                 android:textColorHint="@color/colorText"
@@ -161,8 +161,20 @@
             android:layout_width="fill_parent">
         </EditText>
 
-        <LinearLayout
+        <EditText
             android:layout_below="@+id/EditTextReporte"
+            android:id="@+id/EditTextInvolucrados"
+            android:layout_height="wrap_content"
+            android:hint="Posibles involucrados"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:textColorHint="@color/colorText"
+            android:textColor="@color/colorText"
+            android:layout_width="fill_parent">
+        </EditText>
+
+        <LinearLayout
+            android:layout_below="@+id/EditTextInvolucrados"
             android:id="@+id/linearLayoutButtons"
             android:layout_width="match_parent"
             android:layout_height="60dp"

@@ -26,6 +26,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
 import com.example.gerardogarcias.myapplication.R;
+import com.example.gerardogarcias.myapplication.Util.Common;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
@@ -48,14 +49,18 @@ public class OrganismosFragment extends Fragment {
     private String drawerTitle;
     ArrayAdapter<String> spinnerArrayAdapter;
     MaterialBetterSpinner materialDesignSpinner;
-    EditText edReporte;
+    ArrayList<String> spinnerArray;
     RequestQueue requestQueue;
+    EditText edReporte,edNombre,edApellido, edColonia, edCalle, edCp, edInvolucrados;
     String name, date, hour,nameSelected, idS;
     DateFormat currentDate, currentHour;
-    ArrayList<String> spinnerArray;
-    CardView Registrobutton;
     Random r;
     int folio;
+    CardView Registrobutton;
+
+    //URL para los datos del spiner
+    String url="http://10.0.2.2:3000/requests/1/events/9/situations";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -67,6 +72,24 @@ public class OrganismosFragment extends Fragment {
         materialDesignSpinner = view.findViewById(R.id.android_material_design_spinner);
         Registrobutton = view.findViewById(R.id.cardViewRegistrar);
         edReporte = view.findViewById(R.id.EditTextReporte);
+        edNombre = view.findViewById(R.id.EditTextNombre);
+        edApellido = view.findViewById(R.id.EditTextApellido);
+        edColonia = view.findViewById(R.id.EditTextColonia);
+        edCalle = view.findViewById(R.id.EditTextCalle);
+        edCp = view.findViewById(R.id.EditTextCP);
+        edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
+
+        // informacion de contacto por default
+        if(Common.currentUser != null){
+            edNombre.setText(Common.currentUser.getName());
+            edApellido.setText(Common.currentUser.getLastname());
+
+        }else{
+            edNombre.setText("");
+            edApellido.setText("");
+
+        }
+
         jsonParse();
         jsonID();
         Registro();
@@ -77,7 +100,7 @@ public class OrganismosFragment extends Fragment {
     }
     private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/1/events/9/situations";
+
 
 
         final JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
@@ -133,6 +156,7 @@ public class OrganismosFragment extends Fragment {
 
     }
 
+    //crear registro seleccionando el boton
     private void  Registro(){
 
         Registrobutton.setOnClickListener(new View.OnClickListener() {
@@ -162,8 +186,7 @@ public class OrganismosFragment extends Fragment {
 
     //conseguir el id de la situacion seleccionada
     private void jsonID(){
-        //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/1/events/9/situations";
+
         final JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
                     @Override
@@ -231,6 +254,19 @@ public class OrganismosFragment extends Fragment {
             {
                 Map<String, String> params = new HashMap<String, String>();
                 String reporte = edReporte.getText().toString();
+                String nombre = edNombre.getText().toString();
+                String apellido = edApellido.getText().toString();
+                String colonia = edColonia.getText().toString();
+                String calle = edCalle.getText().toString();
+                String cp = edCp.getText().toString();
+                String involucrados = edInvolucrados.getText().toString();
+
+                params.put("requester_name", nombre);
+                params.put("requester_lastname", apellido);
+                params.put("colony", colonia);
+                params.put("street", calle);
+                params.put("zip_code", cp);
+                params.put("involucrados", involucrados);
                 params.put("date", String.valueOf(date));
                 params.put("hour", String.valueOf(hour));
                 params.put("description", reporte);

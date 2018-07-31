@@ -22,12 +22,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".RegisterActivity"
-            android:label="@string/Register"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
 
         <meta-data android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />
@@ -57,7 +51,6 @@
             android:label="@string/incidencias_item">
 
         </activity>
-        <activity android:name=".prueba"></activity>
     </application>
 
 </manifest>
