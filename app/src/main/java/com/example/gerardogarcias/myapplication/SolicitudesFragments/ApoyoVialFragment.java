@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.util.TypedValue;
@@ -62,7 +64,7 @@ public class ApoyoVialFragment extends Fragment {
     DateFormat currentDate, currentHour;
     Random r;
     int folio;
-    CardView Registrobutton;
+    CardView RegistroButton, CancelarButton;
 
     //URL para los datos del spiner
     String url="http://10.0.2.2:3000/requests/1/events/8/situations";
@@ -76,7 +78,8 @@ public class ApoyoVialFragment extends Fragment {
         drawerTitle = getResources().getString(R.string.solicitudes_item);
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         materialDesignSpinner = view.findViewById(R.id.android_material_design_spinner);
-        Registrobutton = view.findViewById(R.id.cardViewRegistrar);
+        RegistroButton = view.findViewById(R.id.cardViewRegistrar);
+        CancelarButton = view.findViewById(R.id.cardViewCancelar);
         edReporte = view.findViewById(R.id.EditTextReporte);
         edNombre = view.findViewById(R.id.EditTextNombre);
         edApellido = view.findViewById(R.id.EditTextApellido);
@@ -99,7 +102,7 @@ public class ApoyoVialFragment extends Fragment {
         jsonParse();
         jsonID();
         Registro();
-
+        Cancelar();
 
         return view;
 
@@ -162,7 +165,7 @@ public class ApoyoVialFragment extends Fragment {
     //crear registro seleccionando el boton
     private void  Registro(){
 
-        Registrobutton.setOnClickListener(new View.OnClickListener() {
+        RegistroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -283,6 +286,32 @@ public class ApoyoVialFragment extends Fragment {
         requestQueue.add(postRequest);
 
     }
+    //set fragment para regresar a menu anterior
+    public void setFragment(int position) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
+        switch (position) {
+            case 0:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                SolicitudesFragment solicitudesFragment = new SolicitudesFragment();
+                fragmentTransaction.replace(R.id.fragment, solicitudesFragment);
+                fragmentTransaction.commit();
+                break;
+
+        }
+    }
+    //boton cancelar
+    private void  Cancelar(){
+        CancelarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setFragment(0);
+            }
+        });
+    }
 
 }
+
+
 
