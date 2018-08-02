@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,15 +54,16 @@ public class OrganismosFragment extends Fragment {
     MaterialBetterSpinner materialDesignSpinner;
     ArrayList<String> spinnerArray;
     RequestQueue requestQueue;
-    EditText edReporte,edNombre,edApellido, edColonia, edCalle, edCp, edInvolucrados;
-    String name, date, hour,nameSelected, idS;
+    EditText edReporte, edNombre, edApellido, edColonia, edCalle, edCp, edInvolucrados;
+    TextView texElementosExtras;
+    String name, date, hour, nameSelected, idS;
     DateFormat currentDate, currentHour;
     Random r;
     int folio;
     CardView RegistroButton, CancelarButton;
 
     //URL para los datos del spiner
-    String url="http://10.0.2.2:3000/requests/1/events/9/situations";
+    String url = "http://10.0.2.2:3000/requests/1/events/9/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class OrganismosFragment extends Fragment {
         final View view = inflater.inflate(R.layout.registros_fragment, container, false);
 
         drawerTitle = getResources().getString(R.string.solicitudes_item);
-        requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
+        requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         materialDesignSpinner = view.findViewById(R.id.android_material_design_spinner);
         RegistroButton = view.findViewById(R.id.cardViewRegistrar);
         CancelarButton = view.findViewById(R.id.cardViewCancelar);
@@ -81,13 +83,14 @@ public class OrganismosFragment extends Fragment {
         edCalle = view.findViewById(R.id.EditTextCalle);
         edCp = view.findViewById(R.id.EditTextCP);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
+        texElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
 
         // informacion de contacto por default
-        if(Common.currentUser != null){
+        if (Common.currentUser != null) {
             edNombre.setText(Common.currentUser.getName());
             edApellido.setText(Common.currentUser.getLastname());
 
-        }else{
+        } else {
             edNombre.setText("");
             edApellido.setText("");
 
@@ -97,18 +100,19 @@ public class OrganismosFragment extends Fragment {
         jsonID();
         Registro();
         Cancelar();
+        AgregarElementosExtras();
 
 
         return view;
 
     }
-    private void jsonParse(){
+
+    private void jsonParse() {
         //URL de la api del primer menu
 
 
-
-        final JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>(){
+        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
@@ -116,19 +120,18 @@ public class OrganismosFragment extends Fragment {
                             spinnerArray = new ArrayList<String>();
                             materialDesignSpinner.setTextColor(Color.parseColor("#FFFFFF"));
                             materialDesignSpinner.setHintTextColor(Color.parseColor("#FFFFFF"));
-                            materialDesignSpinner.setHint("Seleccione tipo de solicitud:");
+                            materialDesignSpinner.setHint("Seleccione tipo de solicitud *");
 
                             //llenar spiner con info de api
-                            for(int i =0; i < response.length(); i++){
+                            for (int i = 0; i < response.length(); i++) {
                                 final JSONObject requests = response.getJSONObject(i);
-                                name = requests.getString("name" );
+                                name = requests.getString("name");
                                 spinnerArray.add(name);
                             }
 
 
                             spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
-                                    android.R.layout.simple_dropdown_item_1line, spinnerArray)
-                            {
+                                    android.R.layout.simple_dropdown_item_1line, spinnerArray) {
                                 public View getView(int position, View convertView, ViewGroup parent) {
                                     View v = super.getView(position, convertView, parent);
                                     v.setBackgroundResource(R.drawable.gradient);
@@ -142,16 +145,14 @@ public class OrganismosFragment extends Fragment {
                             materialDesignSpinner.setAdapter(spinnerArrayAdapter);
 
 
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 },
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                     }
                 }
@@ -161,41 +162,59 @@ public class OrganismosFragment extends Fragment {
     }
 
     //crear registro seleccionando el boton
-    private void  Registro(){
+    private void Registro() {
 
         RegistroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //instanciar variable de fecha año/mes/dia
-                currentDate = new SimpleDateFormat("yyyy-MM-dd");
-                date = currentDate.format(Calendar.getInstance().getTime());
+                 if(idS == null){
+                     materialDesignSpinner.setErrorColor(Color.parseColor("#FE2E2E"));
+                    materialDesignSpinner.setError("seleccione un tipo de solicitud");
+                }
+                else if (TextUtils.isEmpty(edColonia.getText())){
+                    edColonia.setError("este campo es obligatorio");
+                }
+                else if (TextUtils.isEmpty(edCalle.getText())){
+                    edCalle.setError("este campo es obligatorio");
 
-                //instanciar variable de hora hora/minuto/segundo
-                currentHour = new SimpleDateFormat("HH:mm:ss");
-                hour = currentHour.format(Calendar.getInstance().getTime());
-                //conseguir situation_id
-                jsonID();
+                }
 
-                //asignar un numero random al folio
-                r = new Random();
-                folio =r.nextInt(10000 - 1)+1;
-                VolleyPost();
-                Intent intent = new Intent(getActivity().getApplicationContext(),MainMenuActivity.class);
-                Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: "+folio , Toast.LENGTH_LONG).show();
-                startActivity(intent);
+                else
+                    {
+                    //instanciar variable de fecha año/mes/dia
+                    currentDate = new SimpleDateFormat("yyyy-MM-dd");
+                    date = currentDate.format(Calendar.getInstance().getTime());
+
+                    //instanciar variable de hora hora/minuto/segundo
+                    currentHour = new SimpleDateFormat("HH:mm:ss");
+                    hour = currentHour.format(Calendar.getInstance().getTime());
+                    //conseguir situation_id
+                    jsonID();
+                    //asignar un numero random al folio
+                    r = new Random();
+                    folio = r.nextInt(10000 - 1) + 1;
+                    VolleyPost();
+                    Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
+                    Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: " + folio , Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+
+                }
+
+
+
             }
         });
     }
 
     //conseguir el id de la situacion seleccionada
-    private void jsonID(){
+    private void jsonID() {
 
-        final JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>(){
+        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(final JSONArray response) {
-                        for(int i =0; i < response.length(); i++){
+                        for (int i = 0; i < response.length(); i++) {
                             materialDesignSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -210,9 +229,9 @@ public class OrganismosFragment extends Fragment {
                         }
                     }
                 },
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                     }
                 }
@@ -221,19 +240,19 @@ public class OrganismosFragment extends Fragment {
     }
 
     //conseguir el nombre de la situacion seleccionada
-    public void spinnerSelected(){
+    public void spinnerSelected() {
         materialDesignSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 nameSelected = parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(),nameSelected, Toast.LENGTH_SHORT).show();
+                Toast.makeText(parent.getContext(), nameSelected, Toast.LENGTH_SHORT).show();
                 //Toast.makeText(parent.getContext(),idS, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     //hacer el POST de la solicitud
-    public void VolleyPost(){
+    public void VolleyPost() {
 
         String urlPost = "http://10.0.2.2:3000/reportes";
         StringRequest postRequest = new StringRequest(Request.Method.POST, urlPost,
@@ -244,18 +263,16 @@ public class OrganismosFragment extends Fragment {
                         Log.d("Response", response);
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
                         error.printStackTrace();
                     }
                 }
-        ){
+        ) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError
-            {
+            protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 String reporte = edReporte.getText().toString();
                 String nombre = edNombre.getText().toString();
@@ -275,9 +292,9 @@ public class OrganismosFragment extends Fragment {
                 params.put("hour", String.valueOf(hour));
                 params.put("description", reporte);
                 params.put("folio", String.valueOf(folio));
-                params.put("place","volcan 107");
-                params.put("situation_id",idS);
-                params.put("active","true");
+                params.put("place", "volcan 107");
+                params.put("situation_id", idS);
+                params.put("active", "true");
                 return params;
             }
         };
@@ -300,8 +317,9 @@ public class OrganismosFragment extends Fragment {
 
         }
     }
+
     //boton cancelar
-    private void  Cancelar(){
+    private void Cancelar() {
         CancelarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -310,4 +328,13 @@ public class OrganismosFragment extends Fragment {
         });
     }
 
+
+    public void AgregarElementosExtras() {
+texElementosExtras.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deceas agregar " , Toast.LENGTH_LONG).show();
+    }
+});
+    }
 }

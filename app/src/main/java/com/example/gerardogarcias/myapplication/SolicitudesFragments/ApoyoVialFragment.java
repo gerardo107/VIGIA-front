@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -60,6 +61,7 @@ public class ApoyoVialFragment extends Fragment {
     RequestQueue requestQueue;
     ArrayList<String> spinnerArray;
     EditText edReporte,edNombre,edApellido, edColonia, edCalle, edCp, edInvolucrados;
+    TextView texElementosExtras;
     String name, date, hour,nameSelected, idS;
     DateFormat currentDate, currentHour;
     Random r;
@@ -87,6 +89,7 @@ public class ApoyoVialFragment extends Fragment {
         edCalle = view.findViewById(R.id.EditTextCalle);
         edCp = view.findViewById(R.id.EditTextCP);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
+        texElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
 
         // informacion de contacto por default
         if(Common.currentUser != null){
@@ -103,6 +106,7 @@ public class ApoyoVialFragment extends Fragment {
         jsonID();
         Registro();
         Cancelar();
+        AgregarElementosExtras();
 
         return view;
 
@@ -121,7 +125,8 @@ public class ApoyoVialFragment extends Fragment {
                             spinnerArray = new ArrayList<String>();
                             materialDesignSpinner.setTextColor(Color.parseColor("#FFFFFF"));
                             materialDesignSpinner.setHintTextColor(Color.parseColor("#FFFFFF"));
-                            materialDesignSpinner.setHint("Seleccione tipo de solicitud:");
+                            materialDesignSpinner.setHint("Seleccione tipo de solicitud *");
+
 
                             //llenar spiner con info de api
                             for(int i =0; i < response.length(); i++){
@@ -163,29 +168,47 @@ public class ApoyoVialFragment extends Fragment {
     }
 
     //crear registro seleccionando el boton
-    private void  Registro(){
+    private void Registro() {
 
         RegistroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //instanciar variable de fecha año/mes/dia
-                currentDate = new SimpleDateFormat("yyyy-MM-dd");
-                date = currentDate.format(Calendar.getInstance().getTime());
+                if(idS == null){
+                    materialDesignSpinner.setErrorColor(Color.parseColor("#FE2E2E"));
+                    materialDesignSpinner.setError("seleccione un tipo de solicitud");
+                }
+                else if (TextUtils.isEmpty(edColonia.getText())){
+                    edColonia.setError("este campo es obligatorio");
+                }
+                else if (TextUtils.isEmpty(edCalle.getText())){
+                    edCalle.setError("este campo es obligatorio");
 
-                //instanciar variable de hora hora/minuto/segundo
-                currentHour = new SimpleDateFormat("HH:mm:ss");
-                hour = currentHour.format(Calendar.getInstance().getTime());
-                //conseguir situation_id
-                jsonID();
+                }
 
-                //asignar un numero random al folio
-                r = new Random();
-                folio =r.nextInt(10000 - 1)+1;
-                VolleyPost();
-                Intent intent = new Intent(getActivity().getApplicationContext(),MainMenuActivity.class);
-                Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: "+folio , Toast.LENGTH_LONG).show();
-                startActivity(intent);
+                else
+                {
+                    //instanciar variable de fecha año/mes/dia
+                    currentDate = new SimpleDateFormat("yyyy-MM-dd");
+                    date = currentDate.format(Calendar.getInstance().getTime());
+
+                    //instanciar variable de hora hora/minuto/segundo
+                    currentHour = new SimpleDateFormat("HH:mm:ss");
+                    hour = currentHour.format(Calendar.getInstance().getTime());
+                    //conseguir situation_id
+                    jsonID();
+                    //asignar un numero random al folio
+                    r = new Random();
+                    folio = r.nextInt(10000 - 1) + 1;
+                    VolleyPost();
+                    Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
+                    Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: " + folio , Toast.LENGTH_LONG).show();
+                    startActivity(intent);
+
+                }
+
+
+
             }
         });
     }
@@ -307,6 +330,14 @@ public class ApoyoVialFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 setFragment(0);
+            }
+        });
+    }
+    public void AgregarElementosExtras() {
+        texElementosExtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deceas agregar " , Toast.LENGTH_LONG).show();
             }
         });
     }

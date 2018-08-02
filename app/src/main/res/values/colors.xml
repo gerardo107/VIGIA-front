@@ -6,5 +6,6 @@
     <color name="colorAccent2">#FF4081</color>
     <color name="colorAccent3">#F27321</color>
     <color name="colorText">#FFFFFF</color>
+    <color name="colorError">#FE2E2E</color>
     <color name="window_background">#FFF5F5F5</color>
 </resources>

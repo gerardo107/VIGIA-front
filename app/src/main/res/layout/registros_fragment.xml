@@ -84,30 +84,20 @@
             android:textColor="@color/colorText"
             android:textSize="10pt">
         </TextView>
-        <EditText
-            android:layout_below="@+id/TextViewLocalizacion"
-            android:id="@+id/EditTextColonia"
-            android:layout_height="wrap_content"
-            android:hint="Colonia"
-            android:inputType="textPersonName"
-            android:textColorHint="@color/colorText"
-            android:textColor="@color/colorText"
-            android:layout_width="fill_parent">
-        </EditText>
-
         <LinearLayout
-            android:layout_below="@+id/EditTextColonia"
-            android:id="@+id/linearLayoutLocalizacion"
+            android:layout_below="@+id/TextViewLocalizacion"
+            android:id="@+id/linearLayoutLocalizacionColonioa"
             android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
             android:layout_height="40dp"
 
             android:layout_alignParentStart="true"
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/EditTextCalle"
+                android:id="@+id/EditTextColonia"
                 android:layout_height="wrap_content"
-                android:hint="Calle y numero"
+                android:hint="Colonia *"
                 android:inputType="textPersonName"
                 android:layout_marginStart="0dp"
                 android:textColorHint="@color/colorText"
@@ -126,10 +116,41 @@
             </EditText>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_below="@+id/linearLayoutLocalizacionColonioa"
+            android:id="@+id/linearLayoutLocalizacionCalle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentStart="true"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/EditTextCalle"
+                android:layout_height="wrap_content"
+                android:hint="Calle *"
+                android:inputType="textPersonName"
+                android:layout_marginStart="0dp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:layout_width="180dp">
+            </EditText>
+            <EditText
+                android:id="@+id/EditTextNum"
+                android:layout_height="wrap_content"
+                android:hint="Numero"
+                android:inputType="textPersonName"
+                android:layout_marginStart="10dp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:layout_width="200dp">
+            </EditText>
+
+        </LinearLayout>
 
 
         <CheckBox
-            android:layout_below="@+id/linearLayoutLocalizacion"
+            android:layout_below="@+id/linearLayoutLocalizacionCalle"
             android:id="@+id/CheckBoxLocalizacion"
             android:layout_height="wrap_content"
             android:text="utilizar localización actual"
@@ -170,13 +191,38 @@
             android:layout_width="fill_parent">
         </EditText>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/TextViewElementosExtras"
+            android:layout_width="169dp"
+            android:layout_height="20dp"
             android:layout_below="@+id/EditTextInvolucrados"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:drawableRight="@drawable/ic_agregarcontenido"
+            android:text="Agregar elementos extras"
+            android:textColor="@color/colorText"
+            android:textSize="7pt">
+
+        </TextView>
+        <TextView
+            android:layout_marginTop="15dp"
+            android:layout_below="@+id/TextViewElementosExtras"
+            android:id="@+id/TextViewObligatorio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="* Campos obligatorios"
+            android:textColor="@color/colorError"
+            android:textSize="6pt">
+        </TextView>
+
+        <LinearLayout
+            android:layout_below="@+id/TextViewElementosExtras"
             android:id="@+id/linearLayoutButtons"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:gravity="center"
             android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:orientation="horizontal">
