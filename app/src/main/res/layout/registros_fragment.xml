@@ -139,7 +139,7 @@
                 android:id="@+id/EditTextNum"
                 android:layout_height="wrap_content"
                 android:hint="Numero"
-                android:inputType="textPersonName"
+                android:inputType="textPostalAddress"
                 android:layout_marginStart="10dp"
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"

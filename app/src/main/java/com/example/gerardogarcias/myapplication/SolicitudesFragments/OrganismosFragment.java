@@ -54,7 +54,7 @@ public class OrganismosFragment extends Fragment {
     MaterialBetterSpinner materialDesignSpinner;
     ArrayList<String> spinnerArray;
     RequestQueue requestQueue;
-    EditText edReporte, edNombre, edApellido, edColonia, edCalle, edCp, edInvolucrados;
+    EditText edReporte, edNombre, edApellido, edColonia, edCalle, edCp, edInvolucrados, edNumero;
     TextView texElementosExtras;
     String name, date, hour, nameSelected, idS;
     DateFormat currentDate, currentHour;
@@ -80,8 +80,9 @@ public class OrganismosFragment extends Fragment {
         edNombre = view.findViewById(R.id.EditTextNombre);
         edApellido = view.findViewById(R.id.EditTextApellido);
         edColonia = view.findViewById(R.id.EditTextColonia);
-        edCalle = view.findViewById(R.id.EditTextCalle);
         edCp = view.findViewById(R.id.EditTextCP);
+        edCalle = view.findViewById(R.id.EditTextCalle);
+        edNumero = view.findViewById(R.id.EditTextNum);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
         texElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
 
@@ -196,12 +197,10 @@ public class OrganismosFragment extends Fragment {
                     folio = r.nextInt(10000 - 1) + 1;
                     VolleyPost();
                     Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
-                    Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: " + folio , Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: ", Toast.LENGTH_LONG).show();
                     startActivity(intent);
 
                 }
-
-
 
             }
         });
@@ -278,23 +277,24 @@ public class OrganismosFragment extends Fragment {
                 String nombre = edNombre.getText().toString();
                 String apellido = edApellido.getText().toString();
                 String colonia = edColonia.getText().toString();
-                String calle = edCalle.getText().toString();
                 String cp = edCp.getText().toString();
+                String calle = edCalle.getText().toString();
+                String numero = edNumero.getText().toString();
                 String involucrados = edInvolucrados.getText().toString();
 
                 params.put("requester_name", nombre);
                 params.put("requester_lastname", apellido);
                 params.put("colony", colonia);
-                params.put("street", calle);
                 params.put("zip_code", cp);
+                params.put("street", calle);
+                params.put("house_number", numero);
                 params.put("involucrados", involucrados);
                 params.put("date", String.valueOf(date));
                 params.put("hour", String.valueOf(hour));
                 params.put("description", reporte);
-                params.put("folio", String.valueOf(folio));
-                params.put("place", "volcan 107");
-                params.put("situation_id", idS);
-                params.put("active", "true");
+                params.put("place","volcan 107");
+                params.put("situation_id",idS);
+                params.put("active","true");
                 return params;
             }
         };

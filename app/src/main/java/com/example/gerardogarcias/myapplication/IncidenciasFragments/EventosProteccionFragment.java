@@ -53,7 +53,7 @@ public class EventosProteccionFragment extends Fragment {
     MaterialBetterSpinner materialDesignSpinner;
     RequestQueue requestQueue;
     ArrayList<String> spinnerArray;
-    EditText edReporte,edNombre,edApellido, edColonia, edCalle, edCp, edInvolucrados;
+    EditText edReporte, edNombre, edApellido, edColonia, edCalle, edCp, edInvolucrados, edNumero;
     TextView texElementosExtras;
     String name, date, hour,nameSelected, idS;
     DateFormat currentDate, currentHour;
@@ -79,8 +79,9 @@ public class EventosProteccionFragment extends Fragment {
         edNombre = view.findViewById(R.id.EditTextNombre);
         edApellido = view.findViewById(R.id.EditTextApellido);
         edColonia = view.findViewById(R.id.EditTextColonia);
-        edCalle = view.findViewById(R.id.EditTextCalle);
         edCp = view.findViewById(R.id.EditTextCP);
+        edCalle = view.findViewById(R.id.EditTextCalle);
+        edNumero = view.findViewById(R.id.EditTextNum);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
         texElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
 
@@ -276,15 +277,17 @@ public class EventosProteccionFragment extends Fragment {
                 String nombre = edNombre.getText().toString();
                 String apellido = edApellido.getText().toString();
                 String colonia = edColonia.getText().toString();
-                String calle = edCalle.getText().toString();
                 String cp = edCp.getText().toString();
+                String calle = edCalle.getText().toString();
+                String numero = edNumero.getText().toString();
                 String involucrados = edInvolucrados.getText().toString();
 
                 params.put("requester_name", nombre);
                 params.put("requester_lastname", apellido);
                 params.put("colony", colonia);
-                params.put("street", calle);
                 params.put("zip_code", cp);
+                params.put("street", calle);
+                params.put("house_number", numero);
                 params.put("involucrados", involucrados);
                 params.put("date", String.valueOf(date));
                 params.put("hour", String.valueOf(hour));
