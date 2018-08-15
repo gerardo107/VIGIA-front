@@ -1,5 +1,6 @@
 package com.example.gerardogarcias.myapplication.ReportesFragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +62,7 @@ public class DeficienciaFragment extends Fragment {
     CardView RegistroButton, CancelarButton;
 
     //URL para los datos del spiner
-    String url="http://10.0.2.2:3000/requests/2/events/5/situations";
+    String url="https://vigia-back.herokuapp.com/requests/2/events/5/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -166,12 +168,15 @@ public class DeficienciaFragment extends Fragment {
                 if(idS == null){
                     materialDesignSpinner.setErrorColor(Color.parseColor("#FE2E2E"));
                     materialDesignSpinner.setError("seleccione un tipo de reporte");
+                    ErrorCamposObligatorios();
                 }
                 else if (TextUtils.isEmpty(edColonia.getText())){
                     edColonia.setError("este campo es obligatorio");
+                    ErrorCamposObligatorios();
                 }
                 else if (TextUtils.isEmpty(edCalle.getText())){
                     edCalle.setError("este campo es obligatorio");
+                    ErrorCamposObligatorios();
 
                 }
 
@@ -191,7 +196,7 @@ public class DeficienciaFragment extends Fragment {
                     folio = r.nextInt(10000 - 1) + 1;
                     VolleyPost();
                     Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
-                    Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: " + folio , Toast.LENGTH_LONG).show();
+                    RegistroExitoso();
                     startActivity(intent);
 
                 }
@@ -320,10 +325,99 @@ public class DeficienciaFragment extends Fragment {
         CancelarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFragment(0);
+                CancelarRegistro();
             }
         });
     }
+
+    //metodo para crear la alerta de cancelar el registro
+    private void CancelarRegistro() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View cancelar_layout = inflater.inflate(R.layout.dialog_cancelar, null);
+
+        Button btn_cancelar = (Button)cancelar_layout.findViewById(R.id.btn_cancelar);
+        Button btn_confirmar = (Button)cancelar_layout.findViewById(R.id.btn_confirmar);
+        builder.setView(cancelar_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón Cancelar
+        btn_cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+
+        // evento del botón Confirmar
+        btn_confirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                setFragment(0);
+
+            }
+        });
+
+        dialog.show();
+    }
+
+    //AlertDialog campos obligatorios sin llenar
+    private void ErrorCamposObligatorios() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View ErrorCampos_layout = inflater.inflate(R.layout.dialog_error_campos, null);
+
+        TextView error_campos = (TextView)ErrorCampos_layout.findViewById(R.id.TextViewCamposSinLlenar);
+
+
+        error_campos.setText("Hay campos obligatorios sin llenar ");
+        Button btn_ok = (Button)ErrorCampos_layout.findViewById(R.id.btn_ok);
+        builder.setView(ErrorCampos_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón ok
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+    }
+
+    //AlertDialog registro exitoso
+    private void RegistroExitoso() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View RegistroExitoso_layout = inflater.inflate(R.layout.dialog_registro_exitoso, null);
+
+        TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
+
+
+        registro_exitoso.setText("Tu registro se ha creado exitosamente numero de folio: ");
+        Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
+        builder.setView(RegistroExitoso_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón ok
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+    }
+
     public void AgregarElementosExtras() {
         texElementosExtras.setOnClickListener(new View.OnClickListener() {
             @Override

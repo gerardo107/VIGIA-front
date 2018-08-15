@@ -1,5 +1,6 @@
 package com.example.gerardogarcias.myapplication.SolicitudesFragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,9 +29,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gerardogarcias.myapplication.LoginActivity;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
+import com.example.gerardogarcias.myapplication.Model.User;
 import com.example.gerardogarcias.myapplication.R;
 import com.example.gerardogarcias.myapplication.Util.Common;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
@@ -46,6 +51,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import dmax.dialog.SpotsDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+
 
 public class OrganismosFragment extends Fragment {
 
@@ -55,15 +64,16 @@ public class OrganismosFragment extends Fragment {
     ArrayList<String> spinnerArray;
     RequestQueue requestQueue;
     EditText edReporte, edNombre, edApellido, edColonia, edCalle, edCp, edInvolucrados, edNumero;
-    TextView texElementosExtras;
+    TextView textElementosExtras;
     String name, date, hour, nameSelected, idS;
     DateFormat currentDate, currentHour;
     Random r;
     int folio;
     CardView RegistroButton, CancelarButton;
+    AlertDialog CancelRegistro;
 
     //URL para los datos del spiner
-    String url = "http://10.0.2.2:3000/requests/1/events/9/situations";
+    String url = "https://vigia-back.herokuapp.com/requests/1/events/9/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +94,7 @@ public class OrganismosFragment extends Fragment {
         edCalle = view.findViewById(R.id.EditTextCalle);
         edNumero = view.findViewById(R.id.EditTextNum);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
-        texElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
+        textElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
 
         // informacion de contacto por default
         if (Common.currentUser != null) {
@@ -172,14 +182,16 @@ public class OrganismosFragment extends Fragment {
                  if(idS == null){
                      materialDesignSpinner.setErrorColor(Color.parseColor("#FE2E2E"));
                     materialDesignSpinner.setError("seleccione un tipo de solicitud");
-                }
+                     ErrorCamposObligatorios();
+                 }
                 else if (TextUtils.isEmpty(edColonia.getText())){
                     edColonia.setError("este campo es obligatorio");
-                }
+                     ErrorCamposObligatorios();
+                 }
                 else if (TextUtils.isEmpty(edCalle.getText())){
                     edCalle.setError("este campo es obligatorio");
-
-                }
+                     ErrorCamposObligatorios();
+                 }
 
                 else
                     {
@@ -196,12 +208,8 @@ public class OrganismosFragment extends Fragment {
                     r = new Random();
                     folio = r.nextInt(10000 - 1) + 1;
                     VolleyPost();
-                    Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
-                    Toast.makeText(getActivity().getApplicationContext(), "Tu registro se ha creado exitosamente numero de folio: ", Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-
+                    RegistroExitoso();
                 }
-
             }
         });
     }
@@ -323,17 +331,105 @@ public class OrganismosFragment extends Fragment {
         CancelarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setFragment(0);
+                CancelarRegistro();
             }
         });
     }
 
+    //metodo para crear la alerta de cancelar el registro
+    private void CancelarRegistro() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View cancelar_layout = inflater.inflate(R.layout.dialog_cancelar, null);
+
+        Button btn_cancelar = (Button)cancelar_layout.findViewById(R.id.btn_cancelar);
+        Button btn_confirmar = (Button)cancelar_layout.findViewById(R.id.btn_confirmar);
+        builder.setView(cancelar_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón Cancelar
+        btn_cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+
+        // evento del botón Confirmar
+        btn_confirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                setFragment(0);
+
+            }
+        });
+
+        dialog.show();
+    }
+
+    //AlertDialog campos obligatorios sin llenar
+    private void ErrorCamposObligatorios() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View ErrorCampos_layout = inflater.inflate(R.layout.dialog_error_campos, null);
+
+        TextView error_campos = (TextView)ErrorCampos_layout.findViewById(R.id.TextViewCamposSinLlenar);
+
+
+        error_campos.setText("Hay campos obligatorios sin llenar ");
+        Button btn_ok = (Button)ErrorCampos_layout.findViewById(R.id.btn_ok);
+        builder.setView(ErrorCampos_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón ok
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+    }
+
+    //AlertDialog registro exitoso
+    private void RegistroExitoso() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View RegistroExitoso_layout = inflater.inflate(R.layout.dialog_registro_exitoso, null);
+
+        TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
+
+
+        registro_exitoso.setText("Tu registro se ha creado exitosamente numero de folio: ");
+        Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
+        builder.setView(RegistroExitoso_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón ok
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+    }
+
 
     public void AgregarElementosExtras() {
-texElementosExtras.setOnClickListener(new View.OnClickListener() {
+textElementosExtras.setOnClickListener(new View.OnClickListener() {
     @Override
     public void onClick(View view) {
-        Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deceas agregar " , Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deseas agregar " , Toast.LENGTH_LONG).show();
     }
 });
     }

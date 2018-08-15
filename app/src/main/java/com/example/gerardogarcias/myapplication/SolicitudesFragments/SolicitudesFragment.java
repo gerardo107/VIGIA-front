@@ -2,6 +2,7 @@ package com.example.gerardogarcias.myapplication.SolicitudesFragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -9,10 +10,12 @@ import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -34,6 +37,7 @@ public class SolicitudesFragment extends Fragment {
     TextView mainMenuText;
     CardView mainMenuButtons;
     RequestQueue requestQueue;
+    Handler handle;
     int valueDP_Width, Value_In_Pixel_Width;
     int valueDP_Height,Value_In_Pixel_Height;
     int valueDP_Radius,Value_In_Pixel_Radius;
@@ -57,7 +61,7 @@ public class SolicitudesFragment extends Fragment {
     }
     private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/1/events";
+        String url="https://vigia-back.herokuapp.com/requests/1/events";
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
@@ -153,8 +157,12 @@ public class SolicitudesFragment extends Fragment {
         if(id ==1){
             setFragment(1);
         }
+        if (id == 2){
+            setFragment(2);
+        }
 
     }
+
     public void setFragment(int position) {
         FragmentManager fragmentManager;
         FragmentTransaction fragmentTransaction;
@@ -173,8 +181,34 @@ public class SolicitudesFragment extends Fragment {
                 fragmentTransaction.replace(R.id.fragment, apoyoVialFragment);
                 fragmentTransaction.commit();
                 break;
+            case 2:
+                handle = new Handler();
+                mainMenuButtons.setOnTouchListener(new View.OnTouchListener() {
 
+                    @Override
+                    public boolean onTouch(View arg0, MotionEvent arg1) {
+                        switch (arg1.getAction()) {
+                            case MotionEvent.ACTION_DOWN:
+                                handle.postDelayed(run, 3000);
+                                break;
+
+                            default:
+                                handle.removeCallbacks(run);
+                                break;
+
+                        }
+                        return true;
+                    }
+                });
 
         }
     }
+    Runnable run = new Runnable() {
+
+        @Override
+        public void run() {
+            Toast.makeText(getActivity().getApplicationContext(), "se ha mandado una alerta favor de conservar la calma ", Toast.LENGTH_LONG).show();
+
+        }
+    };
 }

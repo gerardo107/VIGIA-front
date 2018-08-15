@@ -58,7 +58,7 @@ public class ReportesFragment extends Fragment {
     }
     private void jsonParse(){
         //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/2/events";
+        String url="https://vigia-back.herokuapp.com/requests/2/events";
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){

@@ -178,7 +178,7 @@ public class MainMenuActivity extends AppCompatActivity
 
     private void jsonParse() {
         //URL de la api del primer menu
-        String url = "http://10.0.2.2:3000/requests";
+        String url = "https://vigia-back.herokuapp.com/requests";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
