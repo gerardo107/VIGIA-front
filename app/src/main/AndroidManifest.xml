@@ -7,10 +7,11 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.VIGIA">
+        android:theme="@style/Theme.VIGIA"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
@@ -20,19 +21,43 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label=""
+            android:label="@string/Register"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
-        <activity android:name=".MainActivity">
 
+        <meta-data android:name="com.facebook.accountkit.ApplicationName"
+            android:value="@string/app_name" />
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/FACEBOOK_APP_ID" />
+        <meta-data android:name="com.facebook.accountkit.ClientToken"
+            android:value="@string/ACCOUNT_KIT_CLIENT_TOKEN" />
+
+        <activity
+            android:name="com.facebook.accountkit.ui.AccountKitActivity" />
+
+        <activity
+            android:name=".MainMenuActivity"
+            android:label="@string/home_item">
+        </activity>
+        <activity
+            android:name=".SolicitudesActivity"
+            android:label="@string/solicitudes_item">
+        </activity>
+        <activity
+            android:name=".ReportesActivity"
+            android:label="@string/reportes_item">
 
         </activity>
+        <activity
+            android:name=".IncidenciasActivity"
+            android:label="@string/incidencias_item">
 
+        </activity>
+        <activity android:name=".prueba"></activity>
     </application>
 
 </manifest>

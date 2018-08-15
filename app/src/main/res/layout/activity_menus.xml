@@ -6,10 +6,25 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient"
     android:fitsSystemWindows="true"
-    tools:context=".MainActivity">
+    tools:context=".MainMenuActivity">
 
     <!-- Contenido Principal -->
-    <include layout="@layout/main_content" />
+    <include layout="@layout/menus_content" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp">
+
+        <FrameLayout
+            android:id="@+id/fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
+
+    </FrameLayout>
 
     <!-- Menú Deslizante -->
     <android.support.design.widget.NavigationView

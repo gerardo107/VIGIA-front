@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/gradient"
-    tools:context=".RegisterActivity">
+    app:cardElevation="16dp"
+    app:cardCornerRadius="8dp">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/gradient"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
@@ -22,71 +24,69 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_register"/>
+
 
     <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gradient"
+        android:paddingTop="40dp">
+        
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/buttomBack"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginStart="0dp"
-            app:cardBackgroundColor="@color/colorAccent"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="10dp">
-
-            <RelativeLayout
-                android:layout_width="155dp"
-                android:layout_height="54dp">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Regresar"
-                    android:textColor="#fff"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginStart="25dp"
-            app:cardBackgroundColor="@color/colorAccent"
-            app:cardCornerRadius="25dp"
-            app:cardElevation="10dp">
-
-            <RelativeLayout
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edt_name"
+                android:hint="Nombre"
+                android:textSize="18sp"
+                android:textColorHint="@color/colorText"
+                android:textColor="@color/colorText"
+                android:inputType="text"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                app:met_floatingLabel="highlight" />
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="Registrar"
-                    android:textColor="#fff"
-                    android:textSize="18sp" />
-            </RelativeLayout>
-        </android.support.v7.widget.CardView>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edt_lastname"
+                android:hint="Apellido"
+                android:textSize="18sp"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:met_floatingLabel="highlight" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edt_email"
+                android:hint="Correo"
+                android:textSize="18sp"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:met_floatingLabel="highlight" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edt_address"
+                android:hint="Dirección"
+                android:textSize="18sp"
+                android:inputType="text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:met_floatingLabel="highlight" />
+
+        </LinearLayout>
+        
+        <Button
+            android:id="@+id/btn_register"
+            android:text="Registrar"
+            android:background="@color/colorAccent"
+            android:textColor="#FFF"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
-
-
-
-</RelativeLayout>
+</android.support.v7.widget.CardView>
