@@ -191,6 +191,8 @@ public class MainMenuActivity extends AppCompatActivity
 
                                 String name = requests.getString("name");
 
+
+
                                 //cambiando de valores de dp a px para el Width de los botones
                                 valueDP_Width = 340;//value in dp
                                 Value_In_Pixel_Width = (int) TypedValue.applyDimension(
