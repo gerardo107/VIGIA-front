@@ -257,7 +257,7 @@ public class EventosVialesFragment extends Fragment {
     //hacer el POST de la solicitud
     public void VolleyPost(){
 
-        String urlPost = "http://10.0.2.2:3000/reportes";
+        String urlPost = "https://vigia-back.herokuapp.com/reportes";
         StringRequest postRequest = new StringRequest(Request.Method.POST, urlPost,
                 new Response.Listener<String>() {
                     @Override

@@ -6,7 +6,7 @@ import com.example.gerardogarcias.myapplication.Retrofit.VigiaAPI;
 
 public class Common {
     // En emulador localhost es 10.0.2.2
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
+    private static final String BASE_URL = "https://vigia-back.herokuapp.com/";
 
     public static User currentUser = null;
 
