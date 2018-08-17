@@ -2,8 +2,13 @@ package com.example.gerardogarcias.myapplication.IncidenciasFragments;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +21,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,19 +39,27 @@ import com.example.gerardogarcias.myapplication.MainMenuActivity;
 import com.example.gerardogarcias.myapplication.R;
 import com.example.gerardogarcias.myapplication.ReportesFragments.ReportesFragment;
 import com.example.gerardogarcias.myapplication.Util.Common;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
 public class EventosSeguridadFragment extends Fragment {
@@ -61,6 +76,13 @@ public class EventosSeguridadFragment extends Fragment {
     Random r;
     int folio;
     CardView RegistroButton, CancelarButton;
+
+    //localización
+    private FusedLocationProviderClient client;
+    Geocoder geocoder;
+    List<Address> addresses;
+    Address lastLocation;
+    CheckBox checkBoxLocalizacion;
 
     //URL para los datos del spiner
     String url="https://vigia-back.herokuapp.com/requests/3/events/2/situations";
@@ -86,6 +108,59 @@ public class EventosSeguridadFragment extends Fragment {
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
         texElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
 
+        checkBoxLocalizacion = view.findViewById(R.id.CheckBoxLocalizacion);
+
+        checkBoxLocalizacion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Log.d("PRESIONADO LOCALIZ", "checkbox pressed");
+                if(b){
+                    requestPermission();
+                    client = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
+
+                    geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+                    if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }else{
+                        client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if(location != null){
+                                    double longitud = location.getLongitude();
+                                    double latitud = location.getLatitude();
+
+                                    try {
+                                        addresses = geocoder.getFromLocation(latitud, longitud, 1);
+
+                                        lastLocation = addresses.get(addresses.size() -1);
+
+                                        String street = lastLocation.getThoroughfare();
+                                        String postalCode = lastLocation.getPostalCode();
+                                        String colony = lastLocation.getSubLocality();
+                                        String number = lastLocation.getFeatureName();
+
+                                        edColonia.setText(colony);
+                                        edCalle.setText(street);
+                                        edNumero.setText(number);
+                                        edCp.setText(postalCode);
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                }else{
+                    edColonia.setText("");
+                    edCp.setText("");
+                    edCalle.setText("");
+                    edNumero.setText("");
+                }
+            }
+        });
+
         // informacion de contacto por default
         if(Common.currentUser != null){
             edNombre.setText(Common.currentUser.getName());
@@ -106,6 +181,11 @@ public class EventosSeguridadFragment extends Fragment {
         return view;
 
     }
+
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION},1);
+    }
+
     private void jsonParse(){
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
