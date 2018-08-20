@@ -278,9 +278,7 @@ public class ActuacionFragment extends Fragment {
                     r = new Random();
                     folio = r.nextInt(10000 - 1) + 1;
                     VolleyPost();
-                    Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
                     RegistroExitoso();
-                    startActivity(intent);
 
                 }
 
