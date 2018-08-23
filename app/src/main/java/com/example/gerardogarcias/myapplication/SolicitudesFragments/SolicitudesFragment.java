@@ -1,5 +1,6 @@
 package com.example.gerardogarcias.myapplication.SolicitudesFragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,6 +41,7 @@ public class SolicitudesFragment extends Fragment {
     CardView mainMenuButtons;
     RequestQueue requestQueue;
     Handler handle;
+    Runnable run;
     String codigo;
     LinearLayout.LayoutParams params;
     int valueDP_Width, Value_In_Pixel_Width;
@@ -56,7 +58,7 @@ public class SolicitudesFragment extends Fragment {
         drawerTitle = getResources().getString(R.string.solicitudes_item);
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         parent=view.findViewById(R.id.parentLayout);
-
+        handle = new Handler();
         jsonParse();
 
         return view;
@@ -242,14 +244,14 @@ public class SolicitudesFragment extends Fragment {
 
     }
     private void  goToSolicitudesFragments(String codigo){
-
-        if(codigo.equals("ORG")){
+        Toast.makeText(getActivity().getApplicationContext(), codigo, Toast.LENGTH_SHORT).show();
+        if(codigo.equals("BP")){
             setFragment(0);
         }
         if(codigo.equals("AV")){
             setFragment(1);
         }
-        if (codigo.equals("BP")){
+        if (codigo.equals("ORG")){
             setFragment(2);
         }
 
@@ -260,11 +262,6 @@ public class SolicitudesFragment extends Fragment {
         FragmentTransaction fragmentTransaction;
         switch (position) {
             case 0:
-                fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                OrganismosFragment organismosFragment = new OrganismosFragment();
-                fragmentTransaction.replace(R.id.fragment, organismosFragment);
-                fragmentTransaction.commit();
                 break;
             case 1:
                 fragmentManager = getFragmentManager();
@@ -274,33 +271,13 @@ public class SolicitudesFragment extends Fragment {
                 fragmentTransaction.commit();
                 break;
             case 2:
-                handle = new Handler();
-                mainMenuButtons.setOnTouchListener(new View.OnTouchListener() {
-
-                    @Override
-                    public boolean onTouch(View arg0, MotionEvent arg1) {
-                        switch (arg1.getAction()) {
-                            case MotionEvent.ACTION_DOWN:
-                                handle.postDelayed(run, 3000);
-                                break;
-
-                            default:
-                                handle.removeCallbacks(run);
-                                break;
-
-                        }
-                        return true;
-                    }
-                });
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                OrganismosFragment organismosFragment = new OrganismosFragment();
+                fragmentTransaction.replace(R.id.fragment, organismosFragment);
+                fragmentTransaction.commit();
+                break;
 
         }
     }
-    Runnable run = new Runnable() {
-
-        @Override
-        public void run() {
-            Toast.makeText(getActivity().getApplicationContext(), "se ha mandado una alerta favor de conservar la calma ", Toast.LENGTH_LONG).show();
-
-        }
-    };
 }
