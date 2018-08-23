@@ -11,11 +11,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="310dp"
-        android:layout_height="330dp"
+        android:layout_width="280dp"
+        android:layout_height="300dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+
         app:srcCompat="@drawable/logo2" />
 
 
@@ -85,20 +85,20 @@
 
         <ImageView
             android:id="@+id/imageView4"
-            android:layout_width="30dp"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/twitter" />
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="30dp"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             app:srcCompat="@drawable/instagram" />
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="30dp"
+            android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             app:srcCompat="@drawable/facebook" />

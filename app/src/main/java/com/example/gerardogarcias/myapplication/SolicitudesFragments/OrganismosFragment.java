@@ -80,7 +80,7 @@ public class OrganismosFragment extends Fragment {
     RequestQueue requestQueue;
     EditText edReporte, edNombre, edApellido, edColonia, edCalle, edCp, edInvolucrados, edNumero;
     TextView textElementosExtras;
-    String name, date, hour, nameSelected, idS;
+    String name, date, hour, nameSelected, idS, idR;
     DateFormat currentDate, currentHour;
     Random r;
     int folio;
@@ -95,7 +95,9 @@ public class OrganismosFragment extends Fragment {
     CheckBox checkBoxLocalizacion;
 
     //URL para los datos del spiner
-    String url = "https://vigia-back.herokuapp.com/requests/1/events/9/situations";
+    String url = "https://vigia-back.herokuapp.com/requests/SA/events/ORG/situations";
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -184,9 +186,12 @@ public class OrganismosFragment extends Fragment {
 
         jsonParse();
         jsonID();
+        GetIdRegistro();
         Registro();
         Cancelar();
         AgregarElementosExtras();
+
+
 
 
         return view;
@@ -198,9 +203,6 @@ public class OrganismosFragment extends Fragment {
     }
 
     private void jsonParse() {
-        //URL de la api del primer menu
-
-
         final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -287,6 +289,7 @@ public class OrganismosFragment extends Fragment {
                     r = new Random();
                     folio = r.nextInt(10000 - 1) + 1;
                     VolleyPost();
+                    GetIdRegistro();
                     RegistroExitoso();
                 }
             }
@@ -484,8 +487,7 @@ public class OrganismosFragment extends Fragment {
 
         TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
 
-
-        registro_exitoso.setText("Tu registro se ha creado exitosamente numero de folio: ");
+        registro_exitoso.setText("Tu registro se ha creado exitosamente numero de folio: "+ idR);
         Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
         builder.setView(RegistroExitoso_layout);
         final AlertDialog dialog = builder.create();
@@ -503,6 +505,35 @@ public class OrganismosFragment extends Fragment {
         dialog.show();
     }
 
+    private void GetIdRegistro(){
+
+        //URL del registro
+        String urlR = "https://vigia-back.herokuapp.com/reportes";
+        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlR, null,
+            new Response.Listener<JSONArray>() {
+                @Override
+                public void onResponse(JSONArray response) {
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            final JSONObject requests = response.getJSONObject(i);
+                            idR = requests.getString("id");
+
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            }
+    );
+
+    }
 
     public void AgregarElementosExtras() {
 textElementosExtras.setOnClickListener(new View.OnClickListener() {

@@ -85,7 +85,7 @@ public class MantenimientoFragment extends Fragment {
 
 
     //URL para los datos del spiner
-    String url="https://vigia-back.herokuapp.com/requests/2/events/4/situations";
+    String url="https://vigia-back.herokuapp.com/requests/REP/events/MIM/situations";
 
 
     @Override

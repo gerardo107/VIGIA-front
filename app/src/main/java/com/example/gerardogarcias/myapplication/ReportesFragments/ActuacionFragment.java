@@ -36,9 +36,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
-import com.example.gerardogarcias.myapplication.MainMenuFragment;
 import com.example.gerardogarcias.myapplication.R;
-import com.example.gerardogarcias.myapplication.SolicitudesFragments.SolicitudesFragment;
 import com.example.gerardogarcias.myapplication.Util.Common;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -86,7 +84,7 @@ public class ActuacionFragment extends Fragment {
     CheckBox checkBoxLocalizacion;
 
     //URL para los datos del spiner
-    String url="https://vigia-back.herokuapp.com/requests/2/events/6/situations";
+    String url="https://vigia-back.herokuapp.com/requests/REP/events/ASP/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

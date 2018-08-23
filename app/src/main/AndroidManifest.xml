@@ -16,6 +16,7 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,20 +37,24 @@
 
         <activity
             android:name=".MainMenuActivity"
-            android:label="@string/home_item">
+            android:label="@string/home_item"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".SolicitudesActivity"
-            android:label="@string/solicitudes_item">
+            android:label="@string/solicitudes_item"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ReportesActivity"
-            android:label="@string/reportes_item">
+            android:label="@string/reportes_item"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity
             android:name=".IncidenciasActivity"
-            android:label="@string/incidencias_item">
+            android:label="@string/incidencias_item"
+            android:screenOrientation="portrait">
 
         </activity>
     </application>

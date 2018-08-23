@@ -85,7 +85,7 @@ public class EventosVialesFragment extends Fragment {
     CheckBox checkBoxLocalizacion;
 
     //URL para los datos del spiner
-    String url="https://vigia-back.herokuapp.com/requests/3/events/1/situations";
+    String url="https://vigia-back.herokuapp.com/requests/INC/events/EV/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -182,8 +182,7 @@ public class EventosVialesFragment extends Fragment {
 
     }
     private void jsonParse(){
-        //URL de la api del primer menu
-        String url="http://10.0.2.2:3000/requests/3/events/1/situations";
+
 
 
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,

@@ -1,7 +1,9 @@
 package com.example.gerardogarcias.myapplication;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     //Button btn_continue;
     CardView btn_continue;
     VigiaAPI mService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,9 +234,7 @@ public class LoginActivity extends AppCompatActivity {
         edt_email.setTextColor(Color.parseColor("#FFFFFF"));
         edt_email.setHintTextColor(Color.parseColor("#FFFFFF"));
 
-        final MaterialEditText edt_address = (MaterialEditText)register_layout.findViewById(R.id.edt_address);
-        edt_address.setTextColor(Color.parseColor("#FFFFFF"));
-        edt_address.setHintTextColor(Color.parseColor("#FFFFFF"));
+
 
         Button btn_register = (Button)register_layout.findViewById(R.id.btn_register);
 
@@ -247,10 +248,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 dialog.dismiss();
 
-                if(TextUtils.isEmpty(edt_address.getText().toString())){
-                    Toast.makeText(LoginActivity.this, "Por favor registra tu dirección", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+
                 if(TextUtils.isEmpty(edt_name.getText().toString())){
                     Toast.makeText(LoginActivity.this, "Por favor registra tu nombre", Toast.LENGTH_SHORT).show();
                     return;
@@ -273,8 +271,7 @@ public class LoginActivity extends AppCompatActivity {
                 mService.register(phone,
                         edt_name.getText().toString(),
                         edt_lastname.getText().toString(),
-                        edt_email.getText().toString(),
-                        edt_address.getText().toString())
+                        edt_email.getText().toString())
                         .enqueue(new Callback<User>() {
                             @Override
                             public void onResponse(Call<User> call, Response<User> response) {

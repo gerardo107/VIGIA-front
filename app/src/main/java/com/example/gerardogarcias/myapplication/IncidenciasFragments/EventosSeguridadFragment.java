@@ -85,7 +85,7 @@ public class EventosSeguridadFragment extends Fragment {
     CheckBox checkBoxLocalizacion;
 
     //URL para los datos del spiner
-    String url="https://vigia-back.herokuapp.com/requests/3/events/2/situations";
+    String url="https://vigia-back.herokuapp.com/requests/INC/events/ESP/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

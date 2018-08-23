@@ -26,7 +26,7 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_name"
                 android:hint="Nombre"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
                 android:inputType="text"
@@ -37,7 +37,7 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_lastname"
                 android:hint="Apellido"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,12 +46,11 @@
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_email"
                 android:hint="Correo"
-                android:textSize="14sp"
+                android:textSize="18sp"
                 android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:met_floatingLabel="highlight" />
-
 
         </LinearLayout>
         

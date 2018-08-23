@@ -84,7 +84,7 @@ public class DeficienciaFragment extends Fragment {
     CheckBox checkBoxLocalizacion;
 
     //URL para los datos del spiner
-    String url="https://vigia-back.herokuapp.com/requests/2/events/5/situations";
+    String url="https://vigia-back.herokuapp.com/requests/REP/events/DPS/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

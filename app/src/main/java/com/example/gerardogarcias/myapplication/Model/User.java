@@ -5,7 +5,6 @@ public class User {
     private String lastname;
     private String phone;
     private String email;
-    private String address;
     private String error_msg; // Este campo estará vacio si el usuario retorna un objeto
     private String created_at;
     private String updated_at;
@@ -52,14 +51,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getCreated_at() {

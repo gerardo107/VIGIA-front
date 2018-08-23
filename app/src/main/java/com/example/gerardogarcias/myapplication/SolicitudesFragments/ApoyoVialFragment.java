@@ -91,7 +91,7 @@ public class ApoyoVialFragment extends Fragment {
     CheckBox checkBoxLocalizacion;
 
     //URL para los datos del spiner
-    String url="https://vigia-back.herokuapp.com/requests/1/events/8/situations";
+    String url="https://vigia-back.herokuapp.com/requests/SA/events/AV/situations";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -194,9 +194,6 @@ public class ApoyoVialFragment extends Fragment {
     }
 
     private void jsonParse(){
-
-
-
         JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>(){
                     @Override

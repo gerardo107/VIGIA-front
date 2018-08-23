@@ -18,8 +18,7 @@ public interface VigiaAPI {
     Call<User> register(@Field("phone") String phone,
                         @Field("name") String name,
                         @Field("lastname") String lastname,
-                        @Field("email") String email,
-                        @Field("address") String address);
+                        @Field("email") String email);
 
     @FormUrlEncoded
     @POST("getuser")

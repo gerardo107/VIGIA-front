@@ -28,7 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:text=""
                 android:textColor="@color/colorText"
-                android:textSize="6pt">
+                android:textSize="8pt">
 
             </TextView>
 

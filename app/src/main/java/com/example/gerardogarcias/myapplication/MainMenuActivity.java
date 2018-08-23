@@ -5,22 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -57,8 +62,11 @@ public class MainMenuActivity extends AppCompatActivity
     int valueDP_Radius, Value_In_Pixel_Radius;
     int valueDP_Elevation, Value_In_Pixel_Elevation;
     Context mContext;
-
+    String codigo;
+    LinearLayout.LayoutParams params;
     TextView txt_name, txt_phone,txt_mail;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,46 +185,142 @@ public class MainMenuActivity extends AppCompatActivity
 
 
     private void jsonParse() {
+
         //URL de la api del primer menu
         String url = "https://vigia-back.herokuapp.com/requests";
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONArray response) {
+                    public void onResponse(final JSONArray response) {
                         try {
                             for (int i = 0; i < response.length(); i++) {
-                                final int finalI = i;
-                                JSONObject requests = response.getJSONObject(i);
+                                 final JSONObject requests = response.getJSONObject(i);
 
                                 String name = requests.getString("name");
 
+                                //obtener el ancho y el alto de las pantallas
+                                DisplayMetrics displayMetrics = mContext.getResources().getDisplayMetrics();
 
 
-                                //cambiando de valores de dp a px para el Width de los botones
-                                valueDP_Width = 340;//value in dp
-                                Value_In_Pixel_Width = (int) TypedValue.applyDimension(
-                                        TypedValue.COMPLEX_UNIT_DIP, valueDP_Width, getResources().getDisplayMetrics());
+                                float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+                                float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+                                Log.d("size"+dpWidth,"mssg");
+                                //definir botones y texto
+                                mainMenuButtons = new CardView(mContext);
+                                mainMenuText = new TextView(mContext);
 
-                                //cambiando de valores de dp a px para el Height de los botones
-                                valueDP_Height = 60;//value in dp
-                                Value_In_Pixel_Height = (int) TypedValue.applyDimension(
-                                        TypedValue.COMPLEX_UNIT_DIP, valueDP_Height, getResources().getDisplayMetrics());
+                                //obtener el codigo de cada situacion
+                                mainMenuButtons.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        try {
 
-                                //cambio de valores de dp a px para radius
-                                valueDP_Radius = 25;//value in dp
-                                Value_In_Pixel_Radius = (int) TypedValue.applyDimension(
-                                        TypedValue.COMPLEX_UNIT_DIP, valueDP_Radius, getResources().getDisplayMetrics());
+                                            codigo = requests.getString("code");
+                                            goToSecondMenus(codigo);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
 
-                                //cambio de valores de dp a px para CardElevation
-                                valueDP_Elevation = 10;//value in dp
-                                Value_In_Pixel_Elevation = (int) TypedValue.applyDimension(
-                                        TypedValue.COMPLEX_UNIT_DIP, valueDP_Elevation, getResources().getDisplayMetrics());
+                                    }
+
+                                });
+
+                                //nexus 5
+                                if (dpWidth >= 360   && dpWidth < 600 ){
+
+                                    //cambiando de valores de dp a px para el Width de los botones
+                                    valueDP_Width = 340;//value in dp
+                                    Value_In_Pixel_Width = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Width, getResources().getDisplayMetrics());
+
+                                    //cambiando de valores de dp a px para el Height de los botones
+                                    valueDP_Height = 60;//value in dp
+                                    Value_In_Pixel_Height = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Height, getResources().getDisplayMetrics());
+
+                                    //cambio de valores de dp a px para radius
+                                    valueDP_Radius = 25;//value in dp
+                                    Value_In_Pixel_Radius = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Radius, getResources().getDisplayMetrics());
+
+                                    //cambio de valores de dp a px para CardElevation
+                                    valueDP_Elevation = 10;//value in dp
+                                    Value_In_Pixel_Elevation = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Elevation, getResources().getDisplayMetrics());
+
+                                    params = new LinearLayout.LayoutParams(Value_In_Pixel_Width, Value_In_Pixel_Height);
+                                    params.setMargins(0, 0, 0, 210);
+
+                                    //tamaño de letra
+                                    mainMenuText.setTextSize(18);
+                                    Toast.makeText(MainMenuActivity.this, "nexus 5 " , Toast.LENGTH_SHORT).show();
+                                }
+
+                                //nexus 10
+                                else if (dpWidth >= 600) {
+                                    //cambiando de valores de dp a px para el Width de los botones
+                                    valueDP_Width = 510;//value in dp
+                                    Value_In_Pixel_Width = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Width, getResources().getDisplayMetrics());
+
+                                    //cambiando de valores de dp a px para el Height de los botones
+                                    valueDP_Height = 80;//value in dp
+                                    Value_In_Pixel_Height = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Height, getResources().getDisplayMetrics());
+
+                                    //cambio de valores de dp a px para radius
+                                    valueDP_Radius = 40;//value in dp
+                                    Value_In_Pixel_Radius = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Radius, getResources().getDisplayMetrics());
+
+                                    //cambio de valores de dp a px para CardElevation
+                                    valueDP_Elevation = 10;//value in dp
+                                    Value_In_Pixel_Elevation = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Elevation, getResources().getDisplayMetrics());
+
+                                    params = new LinearLayout.LayoutParams(Value_In_Pixel_Width, Value_In_Pixel_Height);
+                                    params.setMargins(0, 30, 0, 170);
+
+                                    //tamaño de letra
+                                    mainMenuText.setTextSize(28);
+
+                                    Toast.makeText(MainMenuActivity.this, "nexus 10 " , Toast.LENGTH_SHORT).show();
+
+                                }
+                                //nexus s
+                                else {
+
+                                    //cambiando de valores de dp a px para el Width de los botones
+                                    valueDP_Width = 260;//value in dp
+                                    Value_In_Pixel_Width = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Width, getResources().getDisplayMetrics());
+
+                                    //cambiando de valores de dp a px para el Height de los botones
+                                    valueDP_Height = 50;//value in dp
+                                    Value_In_Pixel_Height = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Height, getResources().getDisplayMetrics());
+
+                                    //cambio de valores de dp a px para radius
+                                    valueDP_Radius = 25;//value in dp
+                                    Value_In_Pixel_Radius = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Radius, getResources().getDisplayMetrics());
+
+                                    //cambio de valores de dp a px para CardElevation
+                                    valueDP_Elevation = 10;//value in dp
+                                    Value_In_Pixel_Elevation = (int) TypedValue.applyDimension(
+                                            TypedValue.COMPLEX_UNIT_DIP, valueDP_Elevation, getResources().getDisplayMetrics());
+
+                                    params = new LinearLayout.LayoutParams(Value_In_Pixel_Width, Value_In_Pixel_Height);
+                                    params.setMargins(0, 0, 0, 85);
+
+                                    //tamaño de letra
+                                    mainMenuText.setTextSize(14);
+                                }
+
+
 
                                 //caracteristicas de los botones
-                                mainMenuButtons = new CardView(mContext);
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(Value_In_Pixel_Width, Value_In_Pixel_Height);
-                                params.setMargins(0, 0, 0, 210);
                                 params.gravity = Gravity.CENTER;
                                 mainMenuButtons.setLayoutParams(params);
                                 mainMenuButtons.setRadius(Value_In_Pixel_Radius);
@@ -224,20 +328,11 @@ public class MainMenuActivity extends AppCompatActivity
                                 mainMenuButtons.setCardElevation(Value_In_Pixel_Elevation);
                                 mainMenuButtons.setId(i);
 
-                                //seleccionar los botones
-                                mainMenuButtons.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        goToSecondMenus(finalI);
-                                    }
-                                });
-
                                 //caracteristicas del texto
-                                mainMenuText = new TextView(mContext);
                                 mainMenuText.setText(name);
                                 mainMenuText.setGravity(Gravity.CENTER);
                                 mainMenuText.setTextColor(Color.parseColor("#FFFFFF"));
-                                mainMenuText.setTextSize(18);
+
 
                                 //agregar el texto a los botones
                                 mainMenuButtons.addView(mainMenuText);
@@ -260,15 +355,17 @@ public class MainMenuActivity extends AppCompatActivity
         requestQueue.add(request);
     }
 
-    private void goToSecondMenus(int id) {
 
-        if (id == 0) {
+
+    private void goToSecondMenus(String codigo) {
+
+        if (codigo.equals("SA")) {
             goToSolicitudes();
         }
-        if (id == 1) {
+        if (codigo.equals("REP")) {
             goToReportes();
         }
-        if (id == 2) {
+        if (codigo.equals("INC")) {
             goToIncidencias();
         }
 
