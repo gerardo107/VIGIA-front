@@ -31,7 +31,7 @@
 
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/android_material_design_spinner"
-            android:layout_width="220dp"
+            android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="Datos personales:"
             android:textColor="@color/colorText"
-            android:textSize="8pt">
+            android:textSize="10pt">
         </TextView>
 
         <EditText
@@ -59,8 +59,7 @@
             android:inputType="textPersonName"
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
-            android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:layout_width="fill_parent">
         </EditText>
 
         <EditText
@@ -72,8 +71,7 @@
             android:inputType="textPersonName"
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
-            android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:layout_width="fill_parent">
         </EditText>
 
         <TextView
@@ -84,7 +82,7 @@
             android:layout_height="wrap_content"
             android:text="Datos localización:"
             android:textColor="@color/colorText"
-            android:textSize="8pt">
+            android:textSize="10pt">
         </TextView>
         <LinearLayout
             android:layout_below="@+id/TextViewLocalizacion"
@@ -104,8 +102,7 @@
                 android:layout_marginStart="0dp"
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
-                android:layout_width="180dp"
-                android:textSize="6pt">
+                android:layout_width="180dp">
             </EditText>
             <EditText
                 android:id="@+id/EditTextCP"
@@ -115,8 +112,7 @@
                 android:layout_marginStart="10dp"
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
-                android:layout_width="200dp"
-                android:textSize="6pt">
+                android:layout_width="200dp">
             </EditText>
 
         </LinearLayout>
@@ -137,8 +133,7 @@
                 android:layout_marginStart="0dp"
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
-                android:layout_width="180dp"
-                android:textSize="6pt">
+                android:layout_width="180dp">
             </EditText>
             <EditText
                 android:id="@+id/EditTextNum"
@@ -148,8 +143,7 @@
                 android:layout_marginStart="10dp"
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
-                android:layout_width="200dp"
-                android:textSize="6pt">
+                android:layout_width="200dp">
             </EditText>
 
         </LinearLayout>
@@ -161,8 +155,7 @@
             android:layout_height="wrap_content"
             android:text="utilizar localización actual"
             android:textColor="@color/colorText"
-            android:layout_width="fill_parent"
-            android:textSize="5pt">
+            android:layout_width="fill_parent">
         </CheckBox>
         <TextView
             android:layout_marginTop="30dp"
@@ -172,7 +165,7 @@
             android:layout_height="wrap_content"
             android:text="Descripción de Hechos:"
             android:textColor="@color/colorText"
-            android:textSize="8pt">
+            android:textSize="10pt">
         </TextView>
         <EditText
             android:layout_below="@+id/TextViewDescripcion"
@@ -183,8 +176,7 @@
             android:lines="5"
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
-            android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:layout_width="fill_parent">
         </EditText>
 
         <EditText
@@ -196,8 +188,7 @@
             android:lines="2"
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
-            android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:layout_width="fill_parent">
         </EditText>
 
         <TextView
@@ -210,7 +201,7 @@
             android:drawableRight="@drawable/ic_agregarcontenido"
             android:text="Agregar elementos extras"
             android:textColor="@color/colorText"
-            android:textSize="6pt">
+            android:textSize="7pt">
 
         </TextView>
         <TextView
@@ -221,7 +212,7 @@
             android:layout_height="wrap_content"
             android:text="* Campos obligatorios"
             android:textColor="@color/colorError"
-            android:textSize="4pt">
+            android:textSize="6pt">
         </TextView>
 
         <LinearLayout
@@ -238,8 +229,8 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardViewCancelar"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="0dp"
                 app:cardBackgroundColor="@color/colorAccent"
@@ -247,8 +238,8 @@
                 app:cardElevation="10dp">
 
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_width="155dp"
+                    android:layout_height="54dp">
 
                     <TextView
                         android:id="@+id/textView"
@@ -257,15 +248,15 @@
                         android:layout_centerInParent="true"
                         android:text="Cancelar"
                         android:textColor="#fff"
-                        android:textSize="14sp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardViewRegistrar"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="25dp"
                 app:cardBackgroundColor="@color/colorAccent"
@@ -283,7 +274,7 @@
                         android:layout_centerInParent="true"
                         android:text="Registrar"
                         android:textColor="#fff"
-                        android:textSize="14sp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

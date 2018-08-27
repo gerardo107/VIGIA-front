@@ -131,6 +131,7 @@ public class MainMenuActivity extends AppCompatActivity
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
                                 menuItem.setChecked(true);
+
                                 goToMain();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
@@ -181,7 +182,6 @@ public class MainMenuActivity extends AppCompatActivity
         }
         return super.onOptionsItemSelected(item);
     }
-    //metodo para ir a MainActivity
 
 
     private void jsonParse() {
@@ -370,6 +370,8 @@ public class MainMenuActivity extends AppCompatActivity
         }
 
     }
+
+    //metodo para ir a MainActivity
     private void  goToMain(){
         Intent intent = new Intent(this,MainMenuActivity.class);
         startActivity(intent);

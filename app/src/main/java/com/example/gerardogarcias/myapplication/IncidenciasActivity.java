@@ -4,6 +4,7 @@ package com.example.gerardogarcias.myapplication;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -27,7 +28,8 @@ import com.example.gerardogarcias.myapplication.Util.Common;
 import com.facebook.accountkit.AccountKit;
 
 
-public class IncidenciasActivity extends AppCompatActivity {
+public class IncidenciasActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
     /**
      * Instancia del drawer
      */
@@ -209,4 +211,8 @@ public class IncidenciasActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
+    }
 }

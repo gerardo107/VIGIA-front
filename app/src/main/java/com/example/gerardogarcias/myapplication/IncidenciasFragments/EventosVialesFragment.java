@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -181,12 +182,9 @@ public class EventosVialesFragment extends Fragment {
         return view;
 
     }
-    private void jsonParse(){
-
-
-
-        JsonArrayRequest request =new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>(){
+    private void jsonParse() {
+        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
@@ -194,39 +192,89 @@ public class EventosVialesFragment extends Fragment {
                             spinnerArray = new ArrayList<String>();
                             materialDesignSpinner.setTextColor(Color.parseColor("#FFFFFF"));
                             materialDesignSpinner.setHintTextColor(Color.parseColor("#FFFFFF"));
-                            materialDesignSpinner.setHint("Seleccione tipo de incidencia *");
+                            materialDesignSpinner.setHint("Seleccione tipo de solicitud *");
+
 
                             //llenar spiner con info de api
-                            for(int i =0; i < response.length(); i++){
-
-                                JSONObject requests = response.getJSONObject(i);
-                                name = requests.getString("name" );
+                            for (int i = 0; i < response.length(); i++) {
+                                final JSONObject requests = response.getJSONObject(i);
+                                name = requests.getString("name");
                                 spinnerArray.add(name);
+                            }
+
+
+                            //obtener el ancho y el alto de las pantallas
+                            DisplayMetrics displayMetrics = getActivity().getApplicationContext().getResources().getDisplayMetrics();
+
+                            float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+                            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+                            Log.d("size"+dpWidth,"mssg");
+
+                            //nexus 5
+                            if (dpWidth >= 360   && dpWidth < 600 ){
+
+                                spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                                        android.R.layout.simple_dropdown_item_1line, spinnerArray) {
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        View v = super.getView(position, convertView, parent);
+                                        v.setBackgroundResource(R.drawable.gradient);
+                                        ((TextView) v).setTextSize(18);
+                                        ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
+                                        return v;
+                                    }
+
+                                };
+                                materialDesignSpinner.setTextSize(18);
 
                             }
-                            spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
-                                    android.R.layout.simple_dropdown_item_1line, spinnerArray)
-                            {
-                                public View getView(int position, View convertView, ViewGroup parent) {
-                                    View v = super.getView(position, convertView, parent);
-                                    v.setBackgroundResource(R.drawable.gradient);
-                                    ((TextView) v).setTextSize(18);
-                                    ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
-                                    return v;
-                                }
 
-                            };
+                            //nexus 10
+                            else if (dpWidth >= 600) {
+
+                                spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                                        android.R.layout.simple_dropdown_item_1line, spinnerArray) {
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        View v = super.getView(position, convertView, parent);
+                                        v.setBackgroundResource(R.drawable.gradient);
+                                        ((TextView) v).setTextSize(22);
+                                        ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
+                                        return v;
+                                    }
+
+                                };
+                                materialDesignSpinner.setTextSize(24);
+                            }
+                            //nexus s
+                            else {
+
+                                spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                                        android.R.layout.simple_dropdown_item_1line, spinnerArray) {
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        View v = super.getView(position, convertView, parent);
+                                        v.setBackgroundResource(R.drawable.gradient);
+                                        ((TextView) v).setTextSize(14);
+                                        ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
+                                        return v;
+                                    }
+
+                                };
+                                materialDesignSpinner.setTextSize(14);
+
+
+                            }
+
 
                             materialDesignSpinner.setAdapter(spinnerArrayAdapter);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 },
-                new Response.ErrorListener(){
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error){
+                    public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
                     }
                 }
@@ -480,7 +528,7 @@ public class EventosVialesFragment extends Fragment {
         TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
 
 
-        registro_exitoso.setText("Tu registro se ha creado exitosamente numero de folio: ");
+        registro_exitoso.setText("Tu registro se ha creado exitosamente");
         Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
         builder.setView(RegistroExitoso_layout);
         final AlertDialog dialog = builder.create();
@@ -502,7 +550,7 @@ public class EventosVialesFragment extends Fragment {
         texElementosExtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deceas agregar " , Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deseas agregar " , Toast.LENGTH_LONG).show();
             }
         });
     }

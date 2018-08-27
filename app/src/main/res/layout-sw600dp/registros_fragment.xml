@@ -31,7 +31,7 @@
 
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/android_material_design_spinner"
-            android:layout_width="220dp"
+            android:layout_width="420dp"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:text="Datos personales:"
             android:textColor="@color/colorText"
-            android:textSize="8pt">
+            android:textSize="18pt">
         </TextView>
 
         <EditText
@@ -60,7 +60,7 @@
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
             android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:textSize="12pt">
         </EditText>
 
         <EditText
@@ -73,7 +73,7 @@
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
             android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:textSize="12pt">
         </EditText>
 
         <TextView
@@ -84,14 +84,14 @@
             android:layout_height="wrap_content"
             android:text="Datos localización:"
             android:textColor="@color/colorText"
-            android:textSize="8pt">
+            android:textSize="18pt">
         </TextView>
         <LinearLayout
             android:layout_below="@+id/TextViewLocalizacion"
             android:id="@+id/linearLayoutLocalizacionColonioa"
             android:layout_width="match_parent"
             android:layout_marginTop="10dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
 
             android:layout_alignParentStart="true"
             android:orientation="horizontal">
@@ -105,7 +105,7 @@
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
                 android:layout_width="180dp"
-                android:textSize="6pt">
+                android:textSize="12pt">
             </EditText>
             <EditText
                 android:id="@+id/EditTextCP"
@@ -116,7 +116,7 @@
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
                 android:layout_width="200dp"
-                android:textSize="6pt">
+                android:textSize="12pt">
             </EditText>
 
         </LinearLayout>
@@ -124,7 +124,7 @@
             android:layout_below="@+id/linearLayoutLocalizacionColonioa"
             android:id="@+id/linearLayoutLocalizacionCalle"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="10dp"
             android:layout_alignParentStart="true"
             android:orientation="horizontal">
@@ -138,7 +138,7 @@
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
                 android:layout_width="180dp"
-                android:textSize="6pt">
+                android:textSize="12pt">
             </EditText>
             <EditText
                 android:id="@+id/EditTextNum"
@@ -149,7 +149,7 @@
                 android:textColorHint="@color/colorText"
                 android:textColor="@color/colorText"
                 android:layout_width="200dp"
-                android:textSize="6pt">
+                android:textSize="12pt">
             </EditText>
 
         </LinearLayout>
@@ -162,7 +162,7 @@
             android:text="utilizar localización actual"
             android:textColor="@color/colorText"
             android:layout_width="fill_parent"
-            android:textSize="5pt">
+            android:textSize="9pt">
         </CheckBox>
         <TextView
             android:layout_marginTop="30dp"
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:text="Descripción de Hechos:"
             android:textColor="@color/colorText"
-            android:textSize="8pt">
+            android:textSize="18pt">
         </TextView>
         <EditText
             android:layout_below="@+id/TextViewDescripcion"
@@ -184,7 +184,7 @@
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
             android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:textSize="12pt">
         </EditText>
 
         <EditText
@@ -197,20 +197,20 @@
             android:textColorHint="@color/colorText"
             android:textColor="@color/colorText"
             android:layout_width="fill_parent"
-            android:textSize="6pt">
+            android:textSize="12pt">
         </EditText>
 
         <TextView
             android:id="@+id/TextViewElementosExtras"
-            android:layout_width="169dp"
-            android:layout_height="20dp"
+            android:layout_width="249dp"
+            android:layout_height="35dp"
             android:layout_below="@+id/EditTextInvolucrados"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:drawableRight="@drawable/ic_agregarcontenido"
             android:text="Agregar elementos extras"
             android:textColor="@color/colorText"
-            android:textSize="6pt">
+            android:textSize="12pt">
 
         </TextView>
         <TextView
@@ -221,14 +221,14 @@
             android:layout_height="wrap_content"
             android:text="* Campos obligatorios"
             android:textColor="@color/colorError"
-            android:textSize="4pt">
+            android:textSize="8pt">
         </TextView>
 
         <LinearLayout
             android:layout_below="@+id/TextViewElementosExtras"
             android:id="@+id/linearLayoutButtons"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="100dp"
             android:gravity="center"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="20dp"
@@ -238,12 +238,12 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardViewCancelar"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_width="250dp"
+                android:layout_height="70dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="0dp"
                 app:cardBackgroundColor="@color/colorAccent"
-                app:cardCornerRadius="25dp"
+                app:cardCornerRadius="35dp"
                 app:cardElevation="10dp">
 
                 <RelativeLayout
@@ -257,19 +257,19 @@
                         android:layout_centerInParent="true"
                         android:text="Cancelar"
                         android:textColor="#fff"
-                        android:textSize="14sp" />
+                        android:textSize="24sp" />
                 </RelativeLayout>
 
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardViewRegistrar"
-                android:layout_width="120dp"
-                android:layout_height="40dp"
+                android:layout_width="250dp"
+                android:layout_height="70dp"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="25dp"
                 app:cardBackgroundColor="@color/colorAccent"
-                app:cardCornerRadius="25dp"
+                app:cardCornerRadius="35dp"
                 app:cardElevation="10dp">
 
                 <RelativeLayout
@@ -283,7 +283,7 @@
                         android:layout_centerInParent="true"
                         android:text="Registrar"
                         android:textColor="#fff"
-                        android:textSize="14sp" />
+                        android:textSize="24sp" />
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

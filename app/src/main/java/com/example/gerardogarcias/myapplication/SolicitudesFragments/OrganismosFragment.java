@@ -1,6 +1,7 @@
 package com.example.gerardogarcias.myapplication.SolicitudesFragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -14,7 +15,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -214,6 +218,7 @@ public class OrganismosFragment extends Fragment {
                             materialDesignSpinner.setHintTextColor(Color.parseColor("#FFFFFF"));
                             materialDesignSpinner.setHint("Seleccione tipo de solicitud *");
 
+
                             //llenar spiner con info de api
                             for (int i = 0; i < response.length(); i++) {
                                 final JSONObject requests = response.getJSONObject(i);
@@ -222,17 +227,66 @@ public class OrganismosFragment extends Fragment {
                             }
 
 
-                            spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
-                                    android.R.layout.simple_dropdown_item_1line, spinnerArray) {
-                                public View getView(int position, View convertView, ViewGroup parent) {
-                                    View v = super.getView(position, convertView, parent);
-                                    v.setBackgroundResource(R.drawable.gradient);
-                                    ((TextView) v).setTextSize(18);
-                                    ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
-                                    return v;
-                                }
+                            //obtener el ancho y el alto de las pantallas
+                            DisplayMetrics displayMetrics = getActivity().getApplicationContext().getResources().getDisplayMetrics();
 
-                            };
+                            float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+                            float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+                            Log.d("size"+dpWidth,"mssg");
+
+                            //nexus 5
+                            if (dpWidth >= 360   && dpWidth < 600 ){
+
+                                spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                                        android.R.layout.simple_dropdown_item_1line, spinnerArray) {
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        View v = super.getView(position, convertView, parent);
+                                        v.setBackgroundResource(R.drawable.gradient);
+                                        ((TextView) v).setTextSize(18);
+                                        ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
+                                        return v;
+                                    }
+
+                                };
+                                materialDesignSpinner.setTextSize(18);
+
+                            }
+
+                            //nexus 10
+                            else if (dpWidth >= 600) {
+
+                                spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                                        android.R.layout.simple_dropdown_item_1line, spinnerArray) {
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        View v = super.getView(position, convertView, parent);
+                                        v.setBackgroundResource(R.drawable.gradient);
+                                        ((TextView) v).setTextSize(22);
+                                        ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
+                                        return v;
+                                    }
+
+                                };
+                                materialDesignSpinner.setTextSize(24);
+                            }
+                            //nexus s
+                            else {
+
+                                spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
+                                        android.R.layout.simple_dropdown_item_1line, spinnerArray) {
+                                    public View getView(int position, View convertView, ViewGroup parent) {
+                                        View v = super.getView(position, convertView, parent);
+                                        v.setBackgroundResource(R.drawable.gradient);
+                                        ((TextView) v).setTextSize(14);
+                                        ((TextView) v).setTextColor(Color.parseColor("#FFFFFF"));
+                                        return v;
+                                    }
+
+                                };
+                                materialDesignSpinner.setTextSize(14);
+
+
+                            }
+
 
                             materialDesignSpinner.setAdapter(spinnerArrayAdapter);
 
@@ -487,7 +541,7 @@ public class OrganismosFragment extends Fragment {
 
         TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
 
-        registro_exitoso.setText("Tu registro se ha creado exitosamente numero de folio: "+ idR);
+        registro_exitoso.setText("Tu registro se ha creado exitosamente");
         Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
         builder.setView(RegistroExitoso_layout);
         final AlertDialog dialog = builder.create();
