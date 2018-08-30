@@ -10,9 +10,6 @@
         <item
             android:id="@+id/nav_solicitudes"
             android:icon="@drawable/ic_file_document"
-            android:tint="@color/colorPrimary"
-            android:iconTint="@color/colorPrimary"
-
             android:title="@string/solicitudes_item" />
         <item
             android:id="@+id/nav_reportes"
