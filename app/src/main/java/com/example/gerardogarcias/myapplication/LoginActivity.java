@@ -264,7 +264,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 final AlertDialog waitingDialog = new SpotsDialog.Builder()
                         .setContext(LoginActivity.this)
-                        .setMessage("Please waiting...")
+                        .setMessage("Por favor espere...")
                         .build();
                 waitingDialog.show();
 

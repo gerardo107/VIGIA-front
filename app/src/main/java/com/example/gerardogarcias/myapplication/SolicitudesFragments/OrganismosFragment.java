@@ -425,7 +425,6 @@ public class OrganismosFragment extends Fragment {
                 String calle = edCalle.getText().toString();
                 String numero = edNumero.getText().toString();
                 String involucrados = edInvolucrados.getText().toString();
-
                 params.put("requester_name", nombre);
                 params.put("requester_lastname", apellido);
                 params.put("colony", colonia);
