@@ -1,6 +1,7 @@
 package com.example.gerardogarcias.myapplication.Retrofit;
 
 import com.example.gerardogarcias.myapplication.Model.CheckUserResponse;
+import com.example.gerardogarcias.myapplication.Model.Reporte;
 import com.example.gerardogarcias.myapplication.Model.User;
 
 import retrofit2.Call;
@@ -23,4 +24,18 @@ public interface VigiaAPI {
     @FormUrlEncoded
     @POST("getuser")
     Call<User> getuser(@Field("phone") String phone);
+
+    @FormUrlEncoded
+    @POST("reportes")
+    Call<Reporte> reportes(@Field("date") String date,
+                           @Field("hour") String hour,
+                           @Field("description") String description,
+                           @Field("user_id") String user_id,
+                           @Field("situation_id") String situation_id,
+                           @Field("street") String street,
+                           @Field("colony") String colony,
+                           @Field("zip_code") String zip_code,
+                           @Field("house_number") String house_number,
+                           @Field("requester_name") String requester_name,
+                           @Field("requester_lastname") String requester_lastname);
 }

@@ -1,39 +1,74 @@
 package com.example.gerardogarcias.myapplication.SolicitudesFragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gerardogarcias.myapplication.LoginActivity;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
+import com.example.gerardogarcias.myapplication.Model.Reporte;
+import com.example.gerardogarcias.myapplication.Model.User;
 import com.example.gerardogarcias.myapplication.R;
+import com.example.gerardogarcias.myapplication.Retrofit.VigiaAPI;
+import com.example.gerardogarcias.myapplication.Util.Common;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 
 public class SolicitudesFragment extends Fragment {
+
+    String URL_POST = "https://vigia-back.herokuapp.com/reportes";
 
     private String drawerTitle;
     LinearLayout parent;
@@ -48,6 +83,14 @@ public class SolicitudesFragment extends Fragment {
     int valueDP_Height,Value_In_Pixel_Height;
     int valueDP_Radius,Value_In_Pixel_Radius;
     int valueDP_Elevation,Value_In_Pixel_Elevation;
+
+    //localización
+    private FusedLocationProviderClient client;
+    Geocoder geocoder;
+    List<Address> addresses;
+    Address lastLocation;
+    VigiaAPI mService = Common.getApi();
+    String colony, street, postalCode, number, date, hour;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -262,6 +305,8 @@ public class SolicitudesFragment extends Fragment {
         FragmentTransaction fragmentTransaction;
         switch (position) {
             case 0:
+                findLocation();
+                startPanicButton();
                 break;
             case 1:
                 fragmentManager = getFragmentManager();
@@ -279,5 +324,107 @@ public class SolicitudesFragment extends Fragment {
                 break;
 
         }
+    }
+
+    public void findLocation(){
+        requestPermission();
+        client = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
+
+        geocoder = new Geocoder(getActivity().getApplicationContext(), Locale.getDefault());
+        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermission();
+        }
+        client.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                Log.d("ResponseLocation", location.toString());
+                if(location != null){
+                    double longitud = location.getLongitude();
+                    double latitud = location.getLatitude();
+
+                    try {
+                        addresses = geocoder.getFromLocation(latitud, longitud, 1);
+
+                        lastLocation = addresses.get(addresses.size() -1);
+                        Log.d("ResponseLastL", lastLocation.toString());
+
+                        street = lastLocation.getThoroughfare();
+                        postalCode = lastLocation.getPostalCode();
+                        colony = lastLocation.getSubLocality();
+                        number = lastLocation.getFeatureName();
+
+
+                        DateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd");
+                        date = currentDate.format(Calendar.getInstance().getTime());
+
+                        //instanciar variable de hora hora/minuto/segundo
+                        DateFormat currentHour = new SimpleDateFormat("HH:mm:ss");
+                        hour = currentHour.format(Calendar.getInstance().getTime());
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void startPanicButton(){
+        mService.reportes(String.valueOf(date),
+                String.valueOf(hour),
+                "Solicitud de pánico activado1",
+                "0",
+                "50",
+                street,
+                colony,
+                postalCode,
+                number,
+                "N/A",
+                "N/A")
+                .enqueue(new Callback<Reporte>() {
+                    @Override
+                    public void onResponse(Call<Reporte> call, retrofit2.Response<Reporte> response) {
+                        Toast.makeText(getContext(), "Solicitud enviada", Toast.LENGTH_SHORT).show();
+                        Log.d("RESPEXI", response.toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Reporte> call, Throwable t) {
+                        Log.d("RESPERR", t.getMessage().toString());
+                        Toast.makeText(getContext(), "Imposible enviar solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+    }
+
+    private void requestPermission(){
+        ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION},1);
+    }
+
+    //AlertDialog registro exitoso
+    private void RegistroExitoso() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View RegistroExitoso_layout = inflater.inflate(R.layout.dialog_registro_exitoso, null);
+
+        TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
+
+        registro_exitoso.setText("Solicitud enviada");
+        Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
+        builder.setView(RegistroExitoso_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón ok
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), MainMenuActivity.class);
+                startActivity(intent);
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
     }
 }
