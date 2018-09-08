@@ -90,7 +90,7 @@ public class SolicitudesFragment extends Fragment {
     List<Address> addresses;
     Address lastLocation;
     VigiaAPI mService = Common.getApi();
-    String colony, street, postalCode, number, date, hour;
+    String colony, street, postalCode, number, date, hour, userName, userLastname, userID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -180,7 +180,7 @@ public class SolicitudesFragment extends Fragment {
 
                                     //tamaño de letra
                                     mainMenuText.setTextSize(18);
-                                    Toast.makeText(getActivity().getApplicationContext(), "nexus 5 " , Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getActivity().getApplicationContext(), "nexus 5 " , Toast.LENGTH_SHORT).show();
                                 }
 
                                 //nexus 10
@@ -211,7 +211,7 @@ public class SolicitudesFragment extends Fragment {
                                     //tamaño de letra
                                     mainMenuText.setTextSize(28);
 
-                                    Toast.makeText(getActivity().getApplicationContext(), "nexus 10 " , Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(getActivity().getApplicationContext(), "nexus 10 " , Toast.LENGTH_SHORT).show();
 
                                 }
                                 //nexus s
@@ -306,6 +306,7 @@ public class SolicitudesFragment extends Fragment {
         switch (position) {
             case 0:
                 findLocation();
+                setUser();
                 startPanicButton();
                 break;
             case 1:
@@ -369,23 +370,42 @@ public class SolicitudesFragment extends Fragment {
         });
     }
 
+    public void setUser(){
+        if(Common.currentUser != null){
+            userID = "0";
+            userName = Common.currentUser.getName();
+            userLastname = Common.currentUser.getLastname();
+
+        }else{
+            userID = "0";
+            userName = "";
+            userLastname = "";
+        }
+
+        Log.d("RESPNAM", userName);
+        Log.d("RESPID", userID);
+        Log.d("RESPLAST", userLastname);
+    }
+
     public void startPanicButton(){
         mService.reportes(String.valueOf(date),
                 String.valueOf(hour),
                 "Solicitud de pánico activado1",
-                "0",
+                userID,
                 "50",
                 street,
                 colony,
                 postalCode,
                 number,
-                "N/A",
-                "N/A")
+                userName,
+                userLastname)
                 .enqueue(new Callback<Reporte>() {
                     @Override
                     public void onResponse(Call<Reporte> call, retrofit2.Response<Reporte> response) {
-                        Toast.makeText(getContext(), "Solicitud enviada", Toast.LENGTH_SHORT).show();
-                        Log.d("RESPEXI", response.toString());
+                        if (response.isSuccessful()){
+                            String msg = response.body().getFolio();
+                            RegistroExitoso(msg);
+                        }
                     }
 
                     @Override
@@ -402,7 +422,7 @@ public class SolicitudesFragment extends Fragment {
     }
 
     //AlertDialog registro exitoso
-    private void RegistroExitoso() {
+    private void RegistroExitoso(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -410,7 +430,7 @@ public class SolicitudesFragment extends Fragment {
 
         TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
 
-        registro_exitoso.setText("Solicitud enviada");
+        registro_exitoso.setText("Solicitud de pánico enviada\nFolio: "+message);
         Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
         builder.setView(RegistroExitoso_layout);
         final AlertDialog dialog = builder.create();
