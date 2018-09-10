@@ -44,10 +44,7 @@ public class ReportesActivity extends AppCompatActivity {
     TextView mainMenuText;
     CardView mainMenuButtons;
     RequestQueue requestQueue;
-    int valueDP_Width, Value_In_Pixel_Width;
-    int valueDP_Height, Value_In_Pixel_Height;
-    int valueDP_Radius, Value_In_Pixel_Radius;
-    int valueDP_Elevation, Value_In_Pixel_Elevation;
+    NavigationView navigationView;
     Context mContext;
 
     TextView txt_name, txt_phone,txt_mail;
@@ -66,7 +63,7 @@ public class ReportesActivity extends AppCompatActivity {
         setToolbar(); // Setear Toolbar como action bar
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupNavigationDrawerContent(navigationView);
         }
@@ -163,6 +160,7 @@ public class ReportesActivity extends AppCompatActivity {
 
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                navigationView.setCheckedItem(R.id.nav_reportes);
                 return true;
 
         }

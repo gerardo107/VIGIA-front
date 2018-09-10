@@ -91,6 +91,7 @@ public class SolicitudesFragment extends Fragment {
     Address lastLocation;
     VigiaAPI mService = Common.getApi();
     String colony, street, postalCode, number, date, hour, userName, userLastname, userID;
+    String people_involved= "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -398,7 +399,8 @@ public class SolicitudesFragment extends Fragment {
                 postalCode,
                 number,
                 userName,
-                userLastname)
+                userLastname,
+                people_involved)
                 .enqueue(new Callback<Reporte>() {
                     @Override
                     public void onResponse(Call<Reporte> call, retrofit2.Response<Reporte> response) {

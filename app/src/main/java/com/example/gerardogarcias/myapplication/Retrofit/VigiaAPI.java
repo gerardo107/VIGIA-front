@@ -37,5 +37,6 @@ public interface VigiaAPI {
                            @Field("zip_code") String zip_code,
                            @Field("house_number") String house_number,
                            @Field("requester_name") String requester_name,
-                           @Field("requester_lastname") String requester_lastname);
+                           @Field("requester_lastname") String requester_lastname,
+                           @Field("people_involved") String people_involved);
 }

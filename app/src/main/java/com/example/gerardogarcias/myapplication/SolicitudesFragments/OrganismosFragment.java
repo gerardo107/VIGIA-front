@@ -42,8 +42,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.LoginActivity;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
+import com.example.gerardogarcias.myapplication.Model.Reporte;
 import com.example.gerardogarcias.myapplication.Model.User;
 import com.example.gerardogarcias.myapplication.R;
+import com.example.gerardogarcias.myapplication.Retrofit.VigiaAPI;
 import com.example.gerardogarcias.myapplication.Util.Common;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -90,8 +92,10 @@ public class OrganismosFragment extends Fragment {
     int folio;
     CardView RegistroButton, CancelarButton;
     AlertDialog CancelRegistro;
+    String reporte, nombre, apellido, colonia, cp, calle, numero,involucrados;
 
     //localización
+    VigiaAPI mService = Common.getApi();
     private FusedLocationProviderClient client;
     Geocoder geocoder;
     List<Address> addresses;
@@ -123,6 +127,7 @@ public class OrganismosFragment extends Fragment {
         edNumero = view.findViewById(R.id.EditTextNum);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
         textElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
+
 
         checkBoxLocalizacion = view.findViewById(R.id.CheckBoxLocalizacion);
 
@@ -190,7 +195,6 @@ public class OrganismosFragment extends Fragment {
 
         jsonParse();
         jsonID();
-        GetIdRegistro();
         Registro();
         Cancelar();
         AgregarElementosExtras();
@@ -339,12 +343,9 @@ public class OrganismosFragment extends Fragment {
                     hour = currentHour.format(Calendar.getInstance().getTime());
                     //conseguir situation_id
                     jsonID();
-                    //asignar un numero random al folio
-                    r = new Random();
-                    folio = r.nextInt(10000 - 1) + 1;
-                    VolleyPost();
-                    GetIdRegistro();
-                    RegistroExitoso();
+                    retrofitPost();
+
+
                 }
             }
         });
@@ -394,55 +395,46 @@ public class OrganismosFragment extends Fragment {
         });
     }
 
+
     //hacer el POST de la solicitud
-    public void VolleyPost() {
+    public void retrofitPost(){
+        reporte = edReporte.getText().toString();
+        nombre = edNombre.getText().toString();
+        apellido = edApellido.getText().toString();
+        colonia = edColonia.getText().toString();
+        cp = edCp.getText().toString();
+        calle = edCalle.getText().toString();
+        numero = edNumero.getText().toString();
+        involucrados = edInvolucrados.getText().toString();
 
-        String urlPost = "https://vigia-back.herokuapp.com/reportes";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, urlPost,
-                new Response.Listener<String>() {
+        mService.reportes(String.valueOf(date),
+                String.valueOf(hour),
+                reporte,
+                "0",
+                idS,
+                calle,
+                colonia,
+                cp,
+                numero,
+                nombre,
+                apellido,
+                involucrados)
+                .enqueue(new Callback<Reporte>() {
                     @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
+                    public void onResponse(Call<Reporte> call, retrofit2.Response<Reporte> response) {
+                        if (response.isSuccessful()){
+                            Log.d("RESPERR", "registro exitoso");
+                            String msg = response.body().getFolio();
+                            RegistroExitoso(msg);
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        error.printStackTrace();
-                    }
-                }
-        ) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                String reporte = edReporte.getText().toString();
-                String nombre = edNombre.getText().toString();
-                String apellido = edApellido.getText().toString();
-                String colonia = edColonia.getText().toString();
-                String cp = edCp.getText().toString();
-                String calle = edCalle.getText().toString();
-                String numero = edNumero.getText().toString();
-                String involucrados = edInvolucrados.getText().toString();
 
-                params.put("requester_name", nombre);
-                params.put("requester_lastname", apellido);
-                params.put("colony", colonia);
-                params.put("zip_code", cp);
-                params.put("street", calle);
-                params.put("house_number", numero);
-                params.put("involucrados", involucrados);
-                params.put("date", String.valueOf(date));
-                params.put("hour", String.valueOf(hour));
-                params.put("description", reporte);
-                params.put("place","volcan 107");
-                params.put("situation_id",idS);
-                params.put("active","true");
-                return params;
-            }
-        };
-        requestQueue.add(postRequest);
+                    @Override
+                    public void onFailure(Call<Reporte> call, Throwable t) {
+                        Log.d("RESPERR", t.getMessage().toString());
+                        Toast.makeText(getContext(), "Imposible enviar solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
@@ -533,7 +525,7 @@ public class OrganismosFragment extends Fragment {
     }
 
     //AlertDialog registro exitoso
-    private void RegistroExitoso() {
+    private void RegistroExitoso(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -541,7 +533,7 @@ public class OrganismosFragment extends Fragment {
 
         TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
 
-        registro_exitoso.setText("Tu registro se ha creado exitosamente");
+        registro_exitoso.setText("Tu registro se ha creado exitosamente\n folio: "+message);
         Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
         builder.setView(RegistroExitoso_layout);
         final AlertDialog dialog = builder.create();
@@ -559,35 +551,6 @@ public class OrganismosFragment extends Fragment {
         dialog.show();
     }
 
-    private void GetIdRegistro(){
-
-        //URL del registro
-        String urlR = "https://vigia-back.herokuapp.com/reportes";
-        final JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlR, null,
-            new Response.Listener<JSONArray>() {
-                @Override
-                public void onResponse(JSONArray response) {
-                    try {
-                        for (int i = 0; i < response.length(); i++) {
-                            final JSONObject requests = response.getJSONObject(i);
-                            idR = requests.getString("id");
-
-                        }
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
-                }
-            }
-    );
-
-    }
 
     public void AgregarElementosExtras() {
 textElementosExtras.setOnClickListener(new View.OnClickListener() {

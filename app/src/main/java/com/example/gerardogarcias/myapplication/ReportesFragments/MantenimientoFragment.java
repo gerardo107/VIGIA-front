@@ -37,7 +37,9 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
+import com.example.gerardogarcias.myapplication.Model.Reporte;
 import com.example.gerardogarcias.myapplication.R;
+import com.example.gerardogarcias.myapplication.Retrofit.VigiaAPI;
 import com.example.gerardogarcias.myapplication.Util.Common;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -59,6 +61,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
@@ -73,11 +78,11 @@ public class MantenimientoFragment extends Fragment {
     TextView texElementosExtras;
     String name, date, hour,nameSelected, idS;
     DateFormat currentDate, currentHour;
-    Random r;
-    int folio;
+    String reporte, nombre, apellido, colonia, cp, calle, numero,involucrados;
     CardView RegistroButton, CancelarButton;
 
     //localización
+    VigiaAPI mService = Common.getApi();
     private FusedLocationProviderClient client;
     Geocoder geocoder;
     List<Address> addresses;
@@ -322,11 +327,7 @@ public class MantenimientoFragment extends Fragment {
                     hour = currentHour.format(Calendar.getInstance().getTime());
                     //conseguir situation_id
                     jsonID();
-                    //asignar un numero random al folio
-                    r = new Random();
-                    folio = r.nextInt(10000 - 1) + 1;
-                    VolleyPost();
-                    RegistroExitoso();
+                    retrofitPost();
 
                 }
 
@@ -381,59 +382,47 @@ public class MantenimientoFragment extends Fragment {
     }
 
     //hacer el POST de la solicitud
-    public void VolleyPost(){
+    public void retrofitPost(){
+        reporte = edReporte.getText().toString();
+        nombre = edNombre.getText().toString();
+        apellido = edApellido.getText().toString();
+        colonia = edColonia.getText().toString();
+        cp = edCp.getText().toString();
+        calle = edCalle.getText().toString();
+        numero = edNumero.getText().toString();
+        involucrados = edInvolucrados.getText().toString();
 
-        String urlPost = "https://vigia-back.herokuapp.com/reportes";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, urlPost,
-                new Response.Listener<String>() {
+        mService.reportes(String.valueOf(date),
+                String.valueOf(hour),
+                reporte,
+                "0",
+                idS,
+                calle,
+                colonia,
+                cp,
+                numero,
+                nombre,
+                apellido,
+                involucrados)
+                .enqueue(new Callback<Reporte>() {
                     @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
+                    public void onResponse(Call<Reporte> call, retrofit2.Response<Reporte> response) {
+                        if (response.isSuccessful()){
+                            Log.d("RESPERR", "registro exitoso");
+                            String msg = response.body().getFolio();
+                            RegistroExitoso(msg);
+                        }
                     }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        error.printStackTrace();
-                    }
-                }
-        ){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError
-            {
-                Map<String, String> params = new HashMap<String, String>();
-                String reporte = edReporte.getText().toString();
-                String nombre = edNombre.getText().toString();
-                String apellido = edApellido.getText().toString();
-                String colonia = edColonia.getText().toString();
-                String cp = edCp.getText().toString();
-                String calle = edCalle.getText().toString();
-                String numero = edNumero.getText().toString();
-                String involucrados = edInvolucrados.getText().toString();
 
-                params.put("requester_name", nombre);
-                params.put("requester_lastname", apellido);
-                params.put("colony", colonia);
-                params.put("zip_code", cp);
-                params.put("street", calle);
-                params.put("house_number", numero);
-                params.put("involucrados", involucrados);
-                params.put("date", String.valueOf(date));
-                params.put("hour", String.valueOf(hour));
-                params.put("description", reporte);
-                params.put("folio", String.valueOf(folio));
-                params.put("place","volcan 107");
-                params.put("situation_id",idS);
-                params.put("active","true");
-                return params;
-            }
-        };
-        requestQueue.add(postRequest);
+                    @Override
+                    public void onFailure(Call<Reporte> call, Throwable t) {
+                        Log.d("RESPERR", t.getMessage().toString());
+                        Toast.makeText(getContext(), "Imposible enviar solicitud", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
+
     //set fragment para regresar a menu anterior
     public void setFragment(int position) {
         FragmentManager fragmentManager;
@@ -519,8 +508,9 @@ public class MantenimientoFragment extends Fragment {
         dialog.show();
     }
 
+
     //AlertDialog registro exitoso
-    private void RegistroExitoso() {
+    private void RegistroExitoso(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = this.getLayoutInflater();
@@ -528,8 +518,7 @@ public class MantenimientoFragment extends Fragment {
 
         TextView registro_exitoso = (TextView)RegistroExitoso_layout.findViewById(R.id.TextViewRegistroExitoso);
 
-
-        registro_exitoso.setText("Tu registro se ha creado exitosamente");
+        registro_exitoso.setText("Tu registro se ha creado exitosamente\n folio: "+message);
         Button btn_ok = (Button)RegistroExitoso_layout.findViewById(R.id.btn_ok);
         builder.setView(RegistroExitoso_layout);
         final AlertDialog dialog = builder.create();

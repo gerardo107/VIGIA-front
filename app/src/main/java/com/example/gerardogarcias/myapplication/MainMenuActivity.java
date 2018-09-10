@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.content.res.Configuration;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
@@ -15,6 +16,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -63,8 +66,10 @@ public class MainMenuActivity extends AppCompatActivity
     int valueDP_Elevation, Value_In_Pixel_Elevation;
     Context mContext;
     String codigo;
+    NavigationView navigationView;
     LinearLayout.LayoutParams params;
     TextView txt_name, txt_phone,txt_mail;
+    MenuItem home;
 
 
 
@@ -81,7 +86,7 @@ public class MainMenuActivity extends AppCompatActivity
         setToolbar(); // Setear Toolbar como action bar
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         if (navigationView != null) {
             setupNavigationDrawerContent(navigationView);
         }
@@ -123,15 +128,14 @@ public class MainMenuActivity extends AppCompatActivity
 
     }
 
-    private void setupNavigationDrawerContent(NavigationView navigationView) {
+    private void setupNavigationDrawerContent(final NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    public boolean onNavigationItemSelected( @NonNull MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
                                 menuItem.setChecked(true);
-
                                 goToMain();
                                 drawerLayout.closeDrawer(GravityCompat.START);
                                 return true;
@@ -177,6 +181,7 @@ public class MainMenuActivity extends AppCompatActivity
 
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
+                navigationView.setCheckedItem(R.id.nav_home);
                 return true;
 
         }
@@ -195,7 +200,7 @@ public class MainMenuActivity extends AppCompatActivity
                     public void onResponse(final JSONArray response) {
                         try {
                             for (int i = 0; i < response.length(); i++) {
-                                 final JSONObject requests = response.getJSONObject(i);
+                                final JSONObject requests = response.getJSONObject(i);
 
                                 String name = requests.getString("name");
 
@@ -400,6 +405,8 @@ public class MainMenuActivity extends AppCompatActivity
         Intent intent = new Intent(MainMenuActivity.this,LoginActivity.class);
         startActivity(intent);
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
