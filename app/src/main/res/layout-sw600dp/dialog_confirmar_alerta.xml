@@ -28,9 +28,20 @@
                 android:layout_gravity="center"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:text="¿Esta seguro que desea cancelar?"
+                android:text="Estas apunto de crear una alerta"
                 android:textColor="@color/colorText"
-                android:textSize="8pt"></TextView>
+                android:textSize="10pt"></TextView>
+            <TextView
+                android:id="@+id/TextViewCancelar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:text="¿Deseas continuar?"
+                android:textColor="@color/colorText"
+                android:textSize="10pt"></TextView>
+
 
         </LinearLayout>
         <LinearLayout
@@ -42,7 +53,7 @@
             android:background="@color/colorAccent"
             android:textColor="#FFFF"
             android:layout_alignParentBottom="true"
-            android:layout_width="180dp"
+            android:layout_width="220dp"
             android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btn_confirmar"
@@ -50,8 +61,8 @@
             android:background="@color/colorAccent"
             android:textColor="#FFFF"
             android:layout_alignParentBottom="true"
-            android:layout_width="180dp"
-            android:layout_marginStart="6dp"
+            android:layout_width="220dp"
+            android:layout_marginStart="8dp"
             android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>

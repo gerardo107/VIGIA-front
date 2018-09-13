@@ -75,8 +75,6 @@ public class SolicitudesFragment extends Fragment {
     TextView mainMenuText;
     CardView mainMenuButtons;
     RequestQueue requestQueue;
-    Handler handle;
-    Runnable run;
     String codigo;
     LinearLayout.LayoutParams params;
     int valueDP_Width, Value_In_Pixel_Width;
@@ -102,7 +100,6 @@ public class SolicitudesFragment extends Fragment {
         drawerTitle = getResources().getString(R.string.solicitudes_item);
         requestQueue =  Volley.newRequestQueue(getActivity().getApplicationContext());
         parent=view.findViewById(R.id.parentLayout);
-        handle = new Handler();
         jsonParse();
 
         return view;
@@ -288,7 +285,6 @@ public class SolicitudesFragment extends Fragment {
 
     }
     private void  goToSolicitudesFragments(String codigo){
-        Toast.makeText(getActivity().getApplicationContext(), codigo, Toast.LENGTH_SHORT).show();
         if(codigo.equals("BP")){
             setFragment(0);
         }
@@ -306,9 +302,7 @@ public class SolicitudesFragment extends Fragment {
         FragmentTransaction fragmentTransaction;
         switch (position) {
             case 0:
-                findLocation();
-                setUser();
-                startPanicButton();
+                ConfirmarAlerta();
                 break;
             case 1:
                 fragmentManager = getFragmentManager();
@@ -387,11 +381,12 @@ public class SolicitudesFragment extends Fragment {
         Log.d("RESPID", userID);
         Log.d("RESPLAST", userLastname);
     }
+    
 
     public void startPanicButton(){
         mService.reportes(String.valueOf(date),
                 String.valueOf(hour),
-                "Solicitud de pánico activado1",
+                "Solicitud de pánico activado",
                 userID,
                 "50",
                 street,
@@ -405,6 +400,7 @@ public class SolicitudesFragment extends Fragment {
                     @Override
                     public void onResponse(Call<Reporte> call, retrofit2.Response<Reporte> response) {
                         if (response.isSuccessful()){
+                            Log.d("RESPERR", "alerta creada");
                             String msg = response.body().getFolio();
                             RegistroExitoso(msg);
                         }
@@ -447,6 +443,41 @@ public class SolicitudesFragment extends Fragment {
 
             }
         });
+        dialog.show();
+    }
+
+    //metodo para crear el dialog de confirmar alerta
+    private void ConfirmarAlerta() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View cancelar_layout = inflater.inflate(R.layout.dialog_confirmar_alerta, null);
+
+        Button btn_cancelar = (Button)cancelar_layout.findViewById(R.id.btn_cancelar);
+        Button btn_confirmar = (Button)cancelar_layout.findViewById(R.id.btn_confirmar);
+        builder.setView(cancelar_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón Cancelar
+        btn_cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+
+        // evento del botón Confirmar
+        btn_confirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                findLocation();
+                setUser();
+                startPanicButton();
+            }
+        });
+
         dialog.show();
     }
 }

@@ -28,7 +28,8 @@
                 android:layout_gravity="center"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:text="¿Esta seguro que desea cancelar?"
+                android:text="Estas apunto de crear una alerta
+                ¿Deseas continuar?"
                 android:textColor="@color/colorText"
                 android:textSize="8pt"></TextView>
 
