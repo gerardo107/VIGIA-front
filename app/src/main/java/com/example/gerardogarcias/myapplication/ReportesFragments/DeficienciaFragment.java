@@ -3,16 +3,22 @@ package com.example.gerardogarcias.myapplication.ReportesFragments;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,6 +42,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gerardogarcias.myapplication.Adapter.UploadListAdapter;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
 import com.example.gerardogarcias.myapplication.Model.Reporte;
 import com.example.gerardogarcias.myapplication.R;
@@ -89,6 +96,15 @@ public class DeficienciaFragment extends Fragment {
     Address lastLocation;
     CheckBox checkBoxLocalizacion;
 
+    //imagenes
+    public static final int RESULT_LOAD_IMAGE1 = 1;
+    private RecyclerView mUploadList;
+
+    private List<String> fileNameList;
+    private List<String> fileDoneList;
+
+    private UploadListAdapter uploadListAdapter;
+
     //URL para los datos del spiner
     String url="https://vigia-back.herokuapp.com/requests/REP/events/DPS/situations";
 
@@ -111,7 +127,19 @@ public class DeficienciaFragment extends Fragment {
         edCalle = view.findViewById(R.id.EditTextCalle);
         edNumero = view.findViewById(R.id.EditTextNum);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
+
+
         texElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
+        mUploadList = view.findViewById(R.id.uploadList);
+
+        fileNameList = new ArrayList<>();
+        fileDoneList = new ArrayList<>();
+
+        uploadListAdapter = new UploadListAdapter(fileNameList, fileDoneList);
+
+        mUploadList.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        mUploadList.setHasFixedSize(true);
+        mUploadList.setAdapter(uploadListAdapter);
 
         checkBoxLocalizacion = view.findViewById(R.id.CheckBoxLocalizacion);
 
@@ -537,9 +565,67 @@ public class DeficienciaFragment extends Fragment {
         texElementosExtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deceas agregar " , Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "select picture"), RESULT_LOAD_IMAGE1);
+                //Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deceas agregar " , Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == RESULT_LOAD_IMAGE1 && resultCode == getActivity().RESULT_OK){
+            if(data.getClipData() != null){
+                int totalItemSelected = data.getClipData().getItemCount();
+
+                for(int i = 0; i < totalItemSelected; i++){
+                    Uri fileuri = data.getClipData().getItemAt(i).getUri();
+                    String filename = getFilename(fileuri);
+
+                    fileNameList.add(filename);
+                    fileDoneList.add("uploading");
+                    uploadListAdapter.notifyDataSetChanged();
+
+                }
+                //Toast.makeText(MainActivity.this, "select multiple images", Toast.LENGTH_SHORT).show();
+            }else if(data.getData() != null){
+                Uri fileuri = data.getData();
+                String filename = getFilename(fileuri);
+
+                fileNameList.add(filename);
+                fileDoneList.add("uploading");
+                uploadListAdapter.notifyDataSetChanged();
+
+                //Toast.makeText(MainActivity.this, "select single images", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public String getFilename(Uri uri){
+        String result = null;
+        if(uri.getScheme().equals("content")){
+            Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(uri, null, null, null, null);
+            try{
+                if(cursor != null && cursor.moveToFirst()){
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            }finally {
+                cursor.close();
+            }
+        }
+        if(result == null){
+            result = uri.getPath();
+            int cut  = result.lastIndexOf('/');
+            if(cut != -1){
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
     }
 
 }
