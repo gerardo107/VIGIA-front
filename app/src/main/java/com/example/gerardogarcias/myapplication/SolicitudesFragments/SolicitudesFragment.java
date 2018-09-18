@@ -471,7 +471,7 @@ public class SolicitudesFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = this.getLayoutInflater();
-        View ErrorCampos_layout = inflater.inflate(R.layout.dialog_error_campos, null);
+        View ErrorCampos_layout = inflater.inflate(R.layout.dialog_error_boton_panico, null);
 
         TextView error_campos = (TextView)ErrorCampos_layout.findViewById(R.id.TextViewCamposSinLlenar);
         TextView error_campos2 = (TextView)ErrorCampos_layout.findViewById(R.id.TextViewCamposSinLlenar2);
