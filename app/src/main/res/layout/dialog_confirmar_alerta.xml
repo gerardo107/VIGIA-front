@@ -22,15 +22,17 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/TextViewConfirmar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:text="Estas apunto de crear una alerta"
-                android:textColor="@color/colorText"
-                android:textSize="10pt"></TextView>
+            android:id="@+id/TextViewConfirmar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="Estas apunto de crear una alerta"
+            android:textColor="@color/colorText"
+            android:textSize="6pt">
+            </TextView>
+
             <TextView
                 android:id="@+id/TextViewConfirmar2"
                 android:layout_width="wrap_content"
@@ -40,30 +42,35 @@
                 android:layout_centerHorizontal="true"
                 android:text="¿Deseas continuar?"
                 android:textColor="@color/colorText"
-                android:textSize="10pt"></TextView>
-
+                android:textSize="6pt">
+            </TextView>
 
         </LinearLayout>
         <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <Button
+
             android:id="@+id/btn_cancelar"
             android:text="Cancelar"
+            android:textSize="10dp"
             android:background="@color/colorAccent"
             android:textColor="#FFFF"
             android:layout_alignParentBottom="true"
-            android:layout_width="220dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="130dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="40dp" />
         <Button
             android:id="@+id/btn_confirmar"
             android:text="Confirmar"
+            android:textSize="10dp"
             android:background="@color/colorAccent"
             android:textColor="#FFFF"
             android:layout_alignParentBottom="true"
-            android:layout_width="220dp"
-            android:layout_marginStart="8dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="130dp"
+            android:layout_marginStart="11dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="40dp" />
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

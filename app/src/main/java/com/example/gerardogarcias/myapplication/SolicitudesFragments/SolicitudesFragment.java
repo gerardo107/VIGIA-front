@@ -302,7 +302,17 @@ public class SolicitudesFragment extends Fragment {
         FragmentTransaction fragmentTransaction;
         switch (position) {
             case 0:
-                ConfirmarAlerta();
+                findLocation();
+                setUser();
+                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    requestPermission();
+                    ErrorLocalizacionObligatoria();
+                }
+                else
+                {
+                    ConfirmarAlerta();
+                }
+
                 break;
             case 1:
                 fragmentManager = getFragmentManager();
@@ -318,6 +328,14 @@ public class SolicitudesFragment extends Fragment {
                 fragmentTransaction.replace(R.id.fragment, organismosFragment);
                 fragmentTransaction.commit();
                 break;
+            case 3:
+                fragmentManager = getFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                SolicitudesFragment solicitudesFragment = new SolicitudesFragment();
+                fragmentTransaction.replace(R.id.fragment, solicitudesFragment);
+                fragmentTransaction.commit();
+                break;
+
 
         }
     }
@@ -381,7 +399,7 @@ public class SolicitudesFragment extends Fragment {
         Log.d("RESPID", userID);
         Log.d("RESPLAST", userLastname);
     }
-    
+
 
     public void startPanicButton(){
         mService.reportes(String.valueOf(date),
@@ -409,7 +427,9 @@ public class SolicitudesFragment extends Fragment {
                     @Override
                     public void onFailure(Call<Reporte> call, Throwable t) {
                         Log.d("RESPERR", t.getMessage().toString());
+                        Log.d("RESPERR2", "alerta  NO creada");
                         Toast.makeText(getContext(), "Imposible enviar solicitud", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
@@ -446,6 +466,33 @@ public class SolicitudesFragment extends Fragment {
         dialog.show();
     }
 
+    //AlertDialog localizacion no concedida
+    private void ErrorLocalizacionObligatoria() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View ErrorCampos_layout = inflater.inflate(R.layout.dialog_error_campos, null);
+
+        TextView error_campos = (TextView)ErrorCampos_layout.findViewById(R.id.TextViewCamposSinLlenar);
+        TextView error_campos2 = (TextView)ErrorCampos_layout.findViewById(R.id.TextViewCamposSinLlenar2);
+
+        error_campos.setText("Se necesita habilitar localizacion de dispositivo");
+        error_campos2.setText("porfavor intente nuevamente ");
+        Button btn_ok = (Button)ErrorCampos_layout.findViewById(R.id.btn_ok);
+        builder.setView(ErrorCampos_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón ok
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
+    }
+
     //metodo para crear el dialog de confirmar alerta
     private void ConfirmarAlerta() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -471,10 +518,16 @@ public class SolicitudesFragment extends Fragment {
         btn_confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
-                findLocation();
-                setUser();
-                startPanicButton();
+                if (postalCode == null){
+                    dialog.dismiss();
+                    ErrorLocalizacionObligatoria();
+                    setFragment(3);
+                }
+                else{
+                    dialog.dismiss();
+                    startPanicButton();
+                }
+
             }
         });
 
