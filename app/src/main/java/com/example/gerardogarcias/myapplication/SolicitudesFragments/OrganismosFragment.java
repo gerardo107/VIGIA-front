@@ -1,19 +1,32 @@
 package com.example.gerardogarcias.myapplication.SolicitudesFragments;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -40,6 +53,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.gerardogarcias.myapplication.Adapter.UploadListAdapter;
 import com.example.gerardogarcias.myapplication.LoginActivity;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
 import com.example.gerardogarcias.myapplication.Model.Reporte;
@@ -53,6 +67,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -75,6 +91,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 public class OrganismosFragment extends Fragment {
@@ -102,6 +119,16 @@ public class OrganismosFragment extends Fragment {
     Address lastLocation;
     CheckBox checkBoxLocalizacion;
 
+    //imagenes
+    public static final int RESULT_LOAD_IMAGE1 = 1;
+    public static final int REQUEST_CAMERA = 2;
+    private RecyclerView mUploadList;
+
+    private List<String> fileNameList;
+    private List<String> fileDoneList;
+
+    private UploadListAdapter uploadListAdapter;
+
     //URL para los datos del spiner
     String url = "https://vigia-back.herokuapp.com/requests/SA/events/ORG/situations";
 
@@ -126,7 +153,19 @@ public class OrganismosFragment extends Fragment {
         edCalle = view.findViewById(R.id.EditTextCalle);
         edNumero = view.findViewById(R.id.EditTextNum);
         edInvolucrados = view.findViewById(R.id.EditTextInvolucrados);
+
+
         textElementosExtras = view.findViewById(R.id.TextViewElementosExtras);
+        mUploadList = view.findViewById(R.id.uploadList);
+
+        fileNameList = new ArrayList<>();
+        fileDoneList = new ArrayList<>();
+
+        uploadListAdapter = new UploadListAdapter(fileNameList, fileDoneList);
+
+        mUploadList.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        mUploadList.setHasFixedSize(true);
+        mUploadList.setAdapter(uploadListAdapter);
 
 
         checkBoxLocalizacion = view.findViewById(R.id.CheckBoxLocalizacion);
@@ -553,11 +592,119 @@ public class OrganismosFragment extends Fragment {
 
 
     public void AgregarElementosExtras() {
-textElementosExtras.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deseas agregar " , Toast.LENGTH_LONG).show();
+        textElementosExtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectImage();
+                //Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deseas agregar " , Toast.LENGTH_LONG).show();
+            }
+        });
     }
-});
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == RESULT_LOAD_IMAGE1 && resultCode == getActivity().RESULT_OK){
+            if(data.getClipData() != null){
+                int totalItemSelected = data.getClipData().getItemCount();
+
+                for(int i = 0; i < totalItemSelected; i++){
+                    Uri fileuri = data.getClipData().getItemAt(i).getUri();
+                    String filename = getFilename(fileuri);
+
+                    fileNameList.add(filename);
+                    fileDoneList.add("uploading");
+                    uploadListAdapter.notifyDataSetChanged();
+
+                }
+                //Toast.makeText(MainActivity.this, "select multiple images", Toast.LENGTH_SHORT).show();
+            }else if(data.getData() != null){
+                Uri fileuri = data.getData();
+                String filename = getFilename(fileuri);
+
+                fileNameList.add(filename);
+                fileDoneList.add("uploading");
+                uploadListAdapter.notifyDataSetChanged();
+
+                //Toast.makeText(MainActivity.this, "select single images", Toast.LENGTH_SHORT).show();
+            }
+        }else if(requestCode == REQUEST_CAMERA && resultCode == getActivity().RESULT_OK){
+            if(data != null){
+                Bundle extras = data.getExtras();
+                Bitmap bitPhoto = (Bitmap) extras.get("data");
+                String path = "";
+                checkWritePermission();
+                if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }else{
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitPhoto.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+                    path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), bitPhoto, "Title", null);
+                }
+
+                Uri fileUri = Uri.parse(path);
+                String filename = getFilename(fileUri);
+                Log.d("CAMARAURI", filename);
+
+                fileNameList.add(filename);
+                fileDoneList.add("uploading");
+                uploadListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    public void checkWritePermission(){
+        ActivityCompat.requestPermissions(getActivity(), new String[]{WRITE_EXTERNAL_STORAGE},1);
+    }
+
+    public String getFilename(Uri uri){
+        String result = null;
+        if(uri.getScheme().equals("content")){
+            Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(uri, null, null, null, null);
+            try{
+                if(cursor != null && cursor.moveToFirst()){
+                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                }
+            }finally {
+                cursor.close();
+            }
+        }
+        if(result == null){
+            result = uri.getPath();
+            int cut  = result.lastIndexOf('/');
+            if(cut != -1){
+                result = result.substring(cut + 1);
+            }
+        }
+        return result;
+    }
+
+    private void selectImage(){
+        final CharSequence[] items = {"Camara", "Galería", "Cancelar"};
+
+        AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
+        builder.setTitle("Agregar Imágenes");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (items[i].equals("Camara")){
+                    Log.d("CAMERA", "Se ha seleccionado la camara");
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                        startActivityForResult(intent, REQUEST_CAMERA);
+                    }
+                }else if (items[i].equals("Galería")){
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "select picture"), RESULT_LOAD_IMAGE1);
+                }else if (items[i].equals("Cancelar")){
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 }
