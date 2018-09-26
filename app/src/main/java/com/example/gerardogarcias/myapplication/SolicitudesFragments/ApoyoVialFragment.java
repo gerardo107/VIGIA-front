@@ -666,31 +666,55 @@ public class ApoyoVialFragment extends Fragment {
     }
 
     private void selectImage(){
-        final CharSequence[] items = {"Camara", "Galería", "Cancelar"};
 
-        AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
-        builder.setTitle("Agregar Imágenes");
-        builder.setItems(items, new DialogInterface.OnClickListener() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View cancelar_layout = inflater.inflate(R.layout.dialog_camara, null);
+
+        Button btn_camara = (Button)cancelar_layout.findViewById(R.id.btn_camara);
+        Button btn_galeria = (Button)cancelar_layout.findViewById(R.id.btn_galeria);
+        Button btn_cancelar = (Button)cancelar_layout.findViewById(R.id.btn_cancelar);
+        builder.setView(cancelar_layout);
+        final AlertDialog dialog = builder.create();
+
+
+        // evento del botón Confirmar
+        btn_camara.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (items[i].equals("Camara")){
-                    Log.d("CAMERA", "Se ha seleccionado la camara");
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                        startActivityForResult(intent, REQUEST_CAMERA);
-                    }
-                }else if (items[i].equals("Galería")){
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "select picture"), RESULT_LOAD_IMAGE1);
-                }else if (items[i].equals("Cancelar")){
-                    dialogInterface.dismiss();
+            public void onClick(View view) {
+                Log.d("CAMERA", "Se ha seleccionado la camara");
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(intent, REQUEST_CAMERA);
                 }
+                dialog.dismiss();
+
+
             }
         });
-        builder.show();
+
+        btn_galeria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "select picture"), RESULT_LOAD_IMAGE1);
+                dialog.dismiss();
+
+            }
+        });
+        // evento del botón Cancelar
+        btn_cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
     }
 
 }

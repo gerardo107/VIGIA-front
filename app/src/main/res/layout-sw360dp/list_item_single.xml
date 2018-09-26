@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:padding="13dp"
+        android:padding="14dp"
         android:weightSum="10">
 
         <ImageView
