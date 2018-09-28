@@ -265,20 +265,26 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                dialog.dismiss();
+
 
 
                 if(TextUtils.isEmpty(edt_name.getText().toString())){
-                    Toast.makeText(LoginActivity.this, "Por favor registra tu nombre", Toast.LENGTH_SHORT).show();
+                    edt_name.setError("este campo es obligatorio");
+                    //ErrorCamposObligatorios();
                     return;
                 }
-                if(TextUtils.isEmpty(edt_lastname.getText().toString())){
-                    Toast.makeText(LoginActivity.this, "Por favor registra tu apellido", Toast.LENGTH_SHORT).show();
+                else if(TextUtils.isEmpty(edt_lastname.getText().toString())){
+                    edt_lastname.setError("este campo es obligatorio");
+                    //ErrorCamposObligatorios();
                     return;
                 }
-                if(TextUtils.isEmpty(edt_email.getText().toString())){
-                    Toast.makeText(LoginActivity.this, "Por favor registra tu correo", Toast.LENGTH_SHORT).show();
+                else if(TextUtils.isEmpty(edt_email.getText().toString())){
+                    edt_email.setError("este campo es obligatorio");
+                    //ErrorCamposObligatorios();
                     return;
+                }
+                else {
+                    dialog.dismiss();
                 }
 
                 final AlertDialog waitingDialog = new SpotsDialog.Builder()
@@ -345,5 +351,30 @@ public class LoginActivity extends AppCompatActivity {
         Uri uriUrl = Uri.parse(url);
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         startActivity(launchBrowser);
+    }
+    //AlertDialog campos obligatorios sin llenar
+    private void ErrorCamposObligatorios() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View ErrorCampos_layout = inflater.inflate(R.layout.dialog_error_campos, null);
+
+        TextView error_campos = (TextView)ErrorCampos_layout.findViewById(R.id.TextViewCamposSinLlenar);
+
+
+        error_campos.setText("Hay campos obligatorios sin llenar ");
+        Button btn_ok = (Button)ErrorCampos_layout.findViewById(R.id.btn_ok);
+        builder.setView(ErrorCampos_layout);
+        final AlertDialog dialog = builder.create();
+
+        // evento del botón ok
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+
+            }
+        });
+        dialog.show();
     }
 }
