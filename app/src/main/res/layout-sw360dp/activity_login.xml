@@ -84,20 +84,23 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imageViewW"
+            android:onClick="goToWeb"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/twitter" />
+            app:srcCompat="@drawable/web" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageViewT"
+            android:onClick="goToTwitter"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            app:srcCompat="@drawable/instagram" />
+            app:srcCompat="@drawable/twitter" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/imageViewF"
+            android:onClick="goToFaceBook"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"

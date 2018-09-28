@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -329,5 +330,20 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void goToTwitter (View view) {
+        goToUrl ( "https://twitter.com/gobsma?lang=es");
+    }
+    public void goToWeb (View view) {
+        goToUrl ( "http://sanmigueldeallende.gob.mx");
+    }
+    public void goToFaceBook (View view) {
+        goToUrl ( "https://www.facebook.com/sanmigueldeallendeunidospodemos?fref=ts");
+    }
+    private void goToUrl (String url) {
+        Uri uriUrl = Uri.parse(url);
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchBrowser);
     }
 }
