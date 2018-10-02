@@ -30,16 +30,27 @@ public class UploadListAdapter extends RecyclerView.Adapter<UploadListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         String filename = fileNameList.get(i);
         viewHolder.fileNameView.setText(filename);
 
-        String fileDone = fileDoneList.get(i);
+        /*String fileDone = fileDoneList.get(i);
         if (fileDone.equals("uploading")) {
             viewHolder.fileDoneView.setImageResource(R.drawable.progress);
         } else {
             viewHolder.fileDoneView.setImageResource(R.drawable.checked);
-        }
+        }*/
+
+        viewHolder.fileDoneView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fileNameList.remove(i);
+                fileDoneList.remove(i);
+                notifyItemRemoved(i);
+                notifyItemRangeChanged(i,fileNameList.size());
+                notifyItemRangeChanged(i,fileDoneList.size());
+            }
+        });
 
     }
 

@@ -36,7 +36,7 @@
             android:layout_height="12dp"
             android:layout_gravity="right"
             android:layout_weight="2"
-            app:srcCompat="@drawable/progress"/>
+            app:srcCompat="@drawable/trash"/>
 
     </LinearLayout>
 </RelativeLayout>
