@@ -161,7 +161,7 @@ public class ReportesFragment extends Fragment {
                                     params.setMargins(0, 30, 0, 170);
 
                                     //tamaño de letra
-                                    mainMenuText.setTextSize(28);
+                                    mainMenuText.setTextSize(26);
 
                                     Toast.makeText(getActivity().getApplicationContext(), "nexus 10 " , Toast.LENGTH_SHORT).show();
 

@@ -2,6 +2,7 @@ package com.example.gerardogarcias.myapplication;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -12,6 +13,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -43,12 +45,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
 
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
@@ -56,6 +52,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -143,8 +140,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
         goToMainI();
         requestPermission();
+
+
     }
 
     // Método que llama a la página de autenticación con el número telefonico
@@ -321,9 +321,32 @@ public class LoginActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
+//pedir permiso de localización
     private void requestPermission(){
-        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION},1);
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        if(!hasPermissions(this, PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
+    }
+
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public void checkWritePermission(){
+        ActivityCompat.requestPermissions(this, new String[]{WRITE_EXTERNAL_STORAGE},1);
     }
     //go to main layout without login
     private void  goToMainI(){
