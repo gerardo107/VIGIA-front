@@ -1,9 +1,6 @@
 package com.example.gerardogarcias.myapplication.SolicitudesFragments;
 
-import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -14,7 +11,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.support.annotation.Nullable;
@@ -22,16 +18,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,35 +33,27 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.Adapter.UploadListAdapter;
-import com.example.gerardogarcias.myapplication.LoginActivity;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
 import com.example.gerardogarcias.myapplication.Model.Reporte;
-import com.example.gerardogarcias.myapplication.Model.User;
 import com.example.gerardogarcias.myapplication.R;
 import com.example.gerardogarcias.myapplication.Retrofit.VigiaAPI;
 import com.example.gerardogarcias.myapplication.Util.Common;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.rengwuxian.materialedittext.MaterialEditText;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -80,14 +64,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 
-import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -104,12 +84,9 @@ public class OrganismosFragment extends Fragment {
     RequestQueue requestQueue;
     EditText edReporte, edNombre, edApellido, edColonia, edCalle, edCp, edInvolucrados, edNumero;
     TextView textElementosExtras;
-    String name, date, hour, nameSelected, idS, idR;
+    String name, date, hour, nameSelected, idS;
     DateFormat currentDate, currentHour;
-    Random r;
-    int folio;
     CardView RegistroButton, CancelarButton;
-    AlertDialog CancelRegistro;
     String reporte, nombre, apellido, colonia, cp, calle, numero,involucrados;
 
     //localización

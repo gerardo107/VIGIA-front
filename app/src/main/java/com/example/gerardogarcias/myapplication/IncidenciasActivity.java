@@ -40,8 +40,6 @@ public class IncidenciasActivity extends AppCompatActivity
      */
     private String drawerTitle;
     LinearLayout parent;
-    TextView mainMenuText;
-    CardView mainMenuButtons;
     RequestQueue requestQueue;
     NavigationView navigationView;
     Context mContext;

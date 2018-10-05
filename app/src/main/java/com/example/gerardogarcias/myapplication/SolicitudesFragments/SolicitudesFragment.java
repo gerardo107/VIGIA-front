@@ -8,19 +8,17 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
+
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,18 +26,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.gerardogarcias.myapplication.LoginActivity;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
 import com.example.gerardogarcias.myapplication.Model.Reporte;
-import com.example.gerardogarcias.myapplication.Model.User;
 import com.example.gerardogarcias.myapplication.R;
 import com.example.gerardogarcias.myapplication.Retrofit.VigiaAPI;
 import com.example.gerardogarcias.myapplication.Util.Common;
@@ -55,10 +49,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,7 +82,7 @@ public class SolicitudesFragment extends Fragment {
     Address lastLocation;
     VigiaAPI mService = Common.getApi();
     String colony, street, postalCode, number, date, hour, userName, userLastname, userID;
-    String people_involved= "";
+    String people_involved = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -178,7 +171,7 @@ public class SolicitudesFragment extends Fragment {
 
                                     //tamaño de letra
                                     mainMenuText.setTextSize(18);
-                                    //Toast.makeText(getActivity().getApplicationContext(), "nexus 5 " , Toast.LENGTH_SHORT).show();
+
                                 }
 
                                 //nexus 10
@@ -209,7 +202,7 @@ public class SolicitudesFragment extends Fragment {
                                     //tamaño de letra
                                     mainMenuText.setTextSize(28);
 
-                                    //Toast.makeText(getActivity().getApplicationContext(), "nexus 10 " , Toast.LENGTH_SHORT).show();
+
 
                                 }
                                 //nexus s

@@ -572,7 +572,7 @@ public class DeficienciaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 selectImage();
-                //Toast.makeText(getActivity().getApplicationContext(), "elige los elementos que deceas agregar " , Toast.LENGTH_LONG).show();
+
             }
         });
     }

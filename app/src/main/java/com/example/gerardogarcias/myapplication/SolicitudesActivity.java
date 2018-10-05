@@ -11,7 +11,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -22,7 +21,6 @@ import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.gerardogarcias.myapplication.SolicitudesFragments.OrganismosFragment;
 import com.example.gerardogarcias.myapplication.SolicitudesFragments.SolicitudesFragment;
 import com.example.gerardogarcias.myapplication.Util.Common;
 import com.facebook.accountkit.AccountKit;
@@ -39,8 +37,6 @@ public class SolicitudesActivity extends AppCompatActivity {
      */
     private String drawerTitle;
     LinearLayout parent;
-    TextView mainMenuText;
-    CardView mainMenuButtons;
     RequestQueue requestQueue;
     NavigationView navigationView;
     Context mContext;

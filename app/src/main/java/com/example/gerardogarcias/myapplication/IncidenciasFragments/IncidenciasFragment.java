@@ -132,7 +132,7 @@ public class IncidenciasFragment extends Fragment {
 
                                     //tamaño de letra
                                     mainMenuText.setTextSize(18);
-                                    Toast.makeText(getActivity().getApplicationContext(), "nexus 5 " , Toast.LENGTH_SHORT).show();
+
                                 }
 
                                 //nexus 10
@@ -163,7 +163,7 @@ public class IncidenciasFragment extends Fragment {
                                     //tamaño de letra
                                     mainMenuText.setTextSize(28);
 
-                                    Toast.makeText(getActivity().getApplicationContext(), "nexus 10 " , Toast.LENGTH_SHORT).show();
+                                    
 
                                 }
                                 //nexus s

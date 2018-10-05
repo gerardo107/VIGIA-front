@@ -1,7 +1,6 @@
 package com.example.gerardogarcias.myapplication.ReportesFragments;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -37,13 +36,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.gerardogarcias.myapplication.Adapter.UploadListAdapter;
 import com.example.gerardogarcias.myapplication.MainMenuActivity;
@@ -66,11 +63,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -105,7 +99,6 @@ public class ActuacionFragment extends Fragment {
     public static final int RESULT_LOAD_IMAGE1 = 1;
     public static final int REQUEST_CAMERA = 2;
     private RecyclerView mUploadList;
-
     private List<String> fileNameList;
     private List<String> fileDoneList;
 
