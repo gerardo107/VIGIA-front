@@ -163,7 +163,7 @@ public class IncidenciasFragment extends Fragment {
                                     //tamaño de letra
                                     mainMenuText.setTextSize(28);
 
-                                    
+
 
                                 }
                                 //nexus s
