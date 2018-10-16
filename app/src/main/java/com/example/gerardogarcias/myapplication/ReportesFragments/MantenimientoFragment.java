@@ -671,10 +671,19 @@ public class MantenimientoFragment extends Fragment {
         btn_camara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("CAMERA", "Se ha seleccionado la camara");
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    startActivityForResult(intent, REQUEST_CAMERA);
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+                Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+                contentSelectionIntent.setType("/");
+                Intent[] intentArray = new Intent[]{takePictureIntent,takeVideoIntent};
+                chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+                chooserIntent.putExtra(Intent.EXTRA_TITLE, "Escoge una acción");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+                if (chooserIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivityForResult(chooserIntent, 1);
                 }
                 dialog.dismiss();
 
