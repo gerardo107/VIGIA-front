@@ -695,10 +695,13 @@ public class ApoyoVialFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.setType("*/*");
+                String[] extraMimeTypes = {"application/*", "image/*", "video/*", "audio/*"};
+                intent.putExtra(Intent.EXTRA_MIME_TYPES, extraMimeTypes);
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "select picture"), RESULT_LOAD_IMAGE1);
+                startActivityForResult(intent.createChooser(intent, "select picture"), RESULT_LOAD_IMAGE1);
                 dialog.dismiss();
 
             }
